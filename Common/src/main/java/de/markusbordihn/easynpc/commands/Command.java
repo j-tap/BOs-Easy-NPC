@@ -32,6 +32,8 @@ public class Command {
 
   public static final int FAILURE = 0;
   public static final int SINGLE_SUCCESS = 1;
+  public static final String NPC_TARGET_ARGUMENT = "npc_target";
+  public static final String NPC_TARGETS_ARGUMENT = "npc_targets";
   protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   protected Command() {}
@@ -85,6 +87,16 @@ public class Command {
   public static int sendFailureMessageNoTradingData(
       CommandSourceStack context, EasyNPC<?> easyNPC) {
     return sendFailureMessageNoData(context, easyNPC, "trading data");
+  }
+
+  public static int sendFailureMessageNoObjectiveData(
+      CommandSourceStack context, EasyNPC<?> easyNPC) {
+    return sendFailureMessageNoData(context, easyNPC, "objective data");
+  }
+
+  public static int sendFailureMessageNoObjectiveData(
+      CommandSourceStack context, EasyNPC<?> easyNPC, String objectiveType) {
+    return sendFailureMessageNoData(context, easyNPC, objectiveType + " objective data");
   }
 
   public static int sendFailureMessageNoMerchant(CommandSourceStack context, EasyNPC<?> easyNPC) {
