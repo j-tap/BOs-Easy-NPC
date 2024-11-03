@@ -45,7 +45,7 @@ public class DialogCommand extends Command {
                 .then(
                     Commands.literal("default")
                         .then(
-                            Commands.argument("target", EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .then(
                                     Commands.argument("dialog", DialogArgument.uuidOrLabel())
                                         .executes(
@@ -53,20 +53,21 @@ public class DialogCommand extends Command {
                                                 setDefaultDialog(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     DialogArgument.getUuidOrLabel(
                                                         context, "dialog")))))))
         .then(
             Commands.literal("open")
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .then(
                             Commands.argument("player", EntityArgument.player())
                                 .executes(
                                     context ->
                                         openDialog(
                                             context.getSource(),
-                                            EasyNPCArgument.getEntityWithAccess(context, "target"),
+                                            EasyNPCArgument.getEntityWithAccess(
+                                                context, NPC_TARGET_ARGUMENT),
                                             EntityArgument.getPlayer(context, "player")))
                                 .then(
                                     Commands.argument("dialog", DialogArgument.uuidOrLabel())
@@ -75,7 +76,7 @@ public class DialogCommand extends Command {
                                                 openDialog(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     EntityArgument.getPlayer(context, "player"),
                                                     DialogArgument.getUuidOrLabel(
                                                         context, "dialog")))))));

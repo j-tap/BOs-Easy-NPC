@@ -58,11 +58,20 @@ public class ScreenHelper {
       int x, int y, int scale, float yRot, float xRot, LivingEntity livingEntity) {
     // Prepare Renderer
     Minecraft minecraft = Minecraft.getInstance();
-    float f = (float) Math.atan(yRot / 40.0F);
-    float f1 = (float) Math.atan(xRot / 40.0F);
+    boolean isDead = livingEntity.isDeadOrDying();
+    float f;
+    float f1;
     PoseStack poseStack = RenderSystem.getModelViewStack();
     poseStack.pushPose();
-    poseStack.translate(x, y, 1050.0D);
+    if (isDead) {
+      f = (float) Math.atan(25F / 40.0F);
+      f1 = (float) Math.atan(-25F / 40.0F);
+      poseStack.translate(x - 25.0D, y - 30.0D, 1050.0D);
+    } else {
+      f = (float) Math.atan(yRot / 40.0F);
+      f1 = (float) Math.atan(xRot / 40.0F);
+      poseStack.translate(x, y, 1050.0D);
+    }
     poseStack.scale(1.0F, 1.0F, -1.0F);
     RenderSystem.applyModelViewMatrix();
     PoseStack poseStack1 = new PoseStack();

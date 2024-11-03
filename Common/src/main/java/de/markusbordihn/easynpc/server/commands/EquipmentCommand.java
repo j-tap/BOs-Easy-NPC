@@ -43,7 +43,7 @@ public class EquipmentCommand extends Command {
                 .requires(
                     commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_ALL))
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .then(
                             Commands.argument("slot", EquipmentSlotArgument.slot())
                                 .then(
@@ -53,7 +53,7 @@ public class EquipmentCommand extends Command {
                                                 setItemSlot(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     EquipmentSlotArgument.getEquipmentSlot(
                                                         context, "slot"),
                                                     ItemArgument.getItem(context, "item")
@@ -63,14 +63,15 @@ public class EquipmentCommand extends Command {
                 .requires(
                     commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_ALL))
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .then(
                             Commands.argument("slot", EquipmentSlotArgument.slot())
                                 .executes(
                                     context ->
                                         removeItemSlot(
                                             context.getSource(),
-                                            EasyNPCArgument.getEntityWithAccess(context, "target"),
+                                            EasyNPCArgument.getEntityWithAccess(
+                                                context, NPC_TARGET_ARGUMENT),
                                             EquipmentSlotArgument.getEquipmentSlot(
                                                 context, "slot"))))));
   }

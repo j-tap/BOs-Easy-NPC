@@ -80,13 +80,10 @@ public class EasyNPCArgument implements ArgumentType<EntitySelector> {
 
     // Get all entities and filter out the ones without access.
     Collection<? extends EasyNPC<?>> easyNPCs = getEntities(context, name);
-    if (!easyNPCs.isEmpty()) {
-      for (EasyNPC<?> easyNPC : easyNPCs) {
-        if (!AccessManager.hasAccess(context.getSource(), easyNPC.getUUID())) {
-          easyNPCs = easyNPCs.stream().filter(e -> e != easyNPC).toList();
-        }
-      }
-    }
+    easyNPCs =
+        easyNPCs.stream()
+            .filter(easyNPC -> AccessManager.hasAccess(context.getSource(), easyNPC.getUUID()))
+            .toList();
 
     if (easyNPCs.isEmpty()) {
       throw NO_ENTITIES_FOUND.create();

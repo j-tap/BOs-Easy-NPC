@@ -19,62 +19,63 @@
 
 package de.markusbordihn.easynpc.data.objective;
 
+import java.util.Optional;
+
 public enum ObjectiveType {
-  // @formatter:off
-  ATTACK_ANIMAL(2),
-  ATTACK_MOB(2),
-  ATTACK_MOB_WITHOUT_CREEPER(2),
-  ATTACK_MONSTER(2),
-  ATTACK_PLAYER(2),
-  ATTACK_PLAYER_WITHOUT_OWNER(2),
-  ATTACK_VILLAGER(2),
-  AVOID_SUN(2),
-  BOW_ATTACK(4),
-  CLOSE_DOOR(8),
-  CROSSBOW_ATTACK(4),
-  FLEE_SUN(3),
-  FLOAT(0),
-  FOLLOW_ENTITY_BY_UUID(7),
-  FOLLOW_ITEM(7),
-  FOLLOW_OWNER(6),
-  FOLLOW_PLAYER(7),
-  GUN_ATTACK(4),
-  LOOK_AT_ANIMAL(10, false),
-  LOOK_AT_ENTITY_BY_UUID(9, false),
-  LOOK_AT_ITEM(9, false),
-  LOOK_AT_MOB(10, false),
-  LOOK_AT_OWNER(9, false),
-  LOOK_AT_PLAYER(9, false),
-  LOOK_AT_RESET(9, false),
-  LOOK_RANDOM_AROUND(10, false),
-  MELEE_ATTACK(2),
-  MOVE_BACK_TO_HOME(3),
-  MOVE_BACK_TO_VILLAGE(3),
-  MOVE_THROUGH_VILLAGE(5),
-  NONE(false),
-  OPEN_DOOR(8),
-  PANIC(1),
-  RANDOM_STROLL(5),
-  RANDOM_STROLL_AROUND_HOME(2),
-  RANDOM_STROLL_IN_VILLAGE(2),
-  RANDOM_SWIMMING(4),
-  WATER_AVOIDING_RANDOM_STROLL(5),
-  ZOMBIE_ATTACK(2);
+  ATTACK_ANIMAL("animal", 2),
+  ATTACK_MOB("mob", 2),
+  ATTACK_MOB_WITHOUT_CREEPER("mob_without_creeper", 2),
+  ATTACK_MONSTER("monster", 2),
+  ATTACK_PLAYER("player", 2),
+  ATTACK_PLAYER_WITHOUT_OWNER("player_without_owner", 2),
+  ATTACK_VILLAGER("villager", 2),
+  AVOID_SUN("avoid_sun", 2),
+  BOW_ATTACK("bow", 4),
+  CLOSE_DOOR("close_door", 8),
+  CROSSBOW_ATTACK("crossbow", 4),
+  FLEE_SUN("flee_sun", 3),
+  FLOAT("float", 0),
+  FOLLOW_ENTITY_BY_UUID("entity", 7),
+  FOLLOW_ITEM("item", 7),
+  FOLLOW_OWNER("owner", 6),
+  FOLLOW_PLAYER("player", 7),
+  GUN_ATTACK("gun", 4),
+  LOOK_AT_ANIMAL("animal", 10, false),
+  LOOK_AT_ENTITY_BY_UUID("entity", 9, false),
+  LOOK_AT_ITEM("item", 9, false),
+  LOOK_AT_MOB("mob", 10, false),
+  LOOK_AT_OWNER("owner", 9, false),
+  LOOK_AT_PLAYER("player", 9, false),
+  LOOK_AT_RESET("reset", 9, false),
+  LOOK_RANDOM_AROUND("random", 10, false),
+  MELEE_ATTACK("melee", 2),
+  MOVE_BACK_TO_HOME("back_home", 3),
+  MOVE_BACK_TO_VILLAGE("back_village", 3),
+  MOVE_THROUGH_VILLAGE("through_village", 5),
+  NONE("none", false),
+  OPEN_DOOR("open_door", 8),
+  PANIC("panic", 1),
+  RANDOM_STROLL("stroll", 5),
+  RANDOM_STROLL_AROUND_HOME("around_home", 2),
+  RANDOM_STROLL_IN_VILLAGE("in_village", 2),
+  RANDOM_SWIMMING("swimming", 4),
+  WATER_AVOIDING_RANDOM_STROLL("avoid_water", 5),
+  ZOMBIE_ATTACK("zombie", 2);
 
-  // @formatter:on
-
+  private final String friendlyName;
   private final boolean hasTravelObjective;
   private final int defaultPriority;
 
-  ObjectiveType(boolean hasTravelObjective) {
-    this(5, hasTravelObjective);
+  ObjectiveType(String friendlyName, boolean hasTravelObjective) {
+    this(friendlyName, 5, hasTravelObjective);
   }
 
-  ObjectiveType(int defaultPriority) {
-    this(defaultPriority, true);
+  ObjectiveType(String friendlyName, int defaultPriority) {
+    this(friendlyName, defaultPriority, true);
   }
 
-  ObjectiveType(int defaultPriority, boolean hasTravelObjective) {
+  ObjectiveType(String friendlyName, int defaultPriority, boolean hasTravelObjective) {
+    this.friendlyName = friendlyName;
     this.defaultPriority = defaultPriority;
     this.hasTravelObjective = hasTravelObjective;
   }
@@ -90,6 +91,14 @@ public enum ObjectiveType {
     }
   }
 
+  public static Optional<ObjectiveType> byString(String objectiveType) {
+    try {
+      return Optional.of(ObjectiveType.valueOf(objectiveType));
+    } catch (IllegalArgumentException e) {
+      return Optional.empty();
+    }
+  }
+
   public boolean hasTravelObjective() {
     return this.hasTravelObjective;
   }
@@ -100,5 +109,9 @@ public enum ObjectiveType {
 
   public String getObjectiveName() {
     return this.name().toLowerCase();
+  }
+
+  public String getFriendlyName() {
+    return this.friendlyName;
   }
 }
