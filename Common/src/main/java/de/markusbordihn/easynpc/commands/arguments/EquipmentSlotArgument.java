@@ -46,7 +46,7 @@ public class EquipmentSlotArgument implements ArgumentType<EquipmentSlot> {
   private static final Map<String, EquipmentSlot> SLOTS =
       Util.make(
           Maps.newHashMap(),
-          (map) -> {
+          map -> {
             map.put("weapon", EquipmentSlot.MAINHAND);
             map.put("weapon.mainhand", EquipmentSlot.MAINHAND);
             map.put("weapon.offhand", EquipmentSlot.OFFHAND);

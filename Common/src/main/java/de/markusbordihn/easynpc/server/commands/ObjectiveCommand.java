@@ -20,42 +20,33 @@
 package de.markusbordihn.easynpc.server.commands;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.markusbordihn.easynpc.commands.Command;
 import de.markusbordihn.easynpc.commands.arguments.EasyNPCArgument;
-import de.markusbordihn.easynpc.entity.easynpc.EasyNPC;
-import de.markusbordihn.easynpc.entity.easynpc.data.ConfigurationData;
+import de.markusbordihn.easynpc.server.commands.objectives.AttackObjective;
+import de.markusbordihn.easynpc.server.commands.objectives.FollowObjective;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.level.ServerPlayer;
 
-public class ConfigureCommand extends Command {
+public class ObjectiveCommand extends Command {
 
-  private ConfigureCommand() {}
+  private ObjectiveCommand() {}
 
   public static ArgumentBuilder<CommandSourceStack, ?> register() {
-    return Commands.literal("configure")
+    return Commands.literal("objective")
         .requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_ALL))
         .then(
             Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
-                .executes(
-                    context ->
-                        configure(
-                            context.getSource(),
-                            EasyNPCArgument.getEntityWithAccess(context, NPC_TARGET_ARGUMENT))));
-  }
-
-  private static int configure(CommandSourceStack context, EasyNPC<?> easyNPC)
-      throws CommandSyntaxException {
-    ServerPlayer serverPlayer = context.getPlayerOrException();
-
-    // Verify configuration data for the EasyNPC.
-    ConfigurationData<?> configurationData = easyNPC.getEasyNPCConfigurationData();
-    if (configurationData == null) {
-      return sendFailureMessage(context, "This EasyNPC does not support configuration!");
-    }
-
-    configurationData.openMainConfigurationMenu(serverPlayer);
-    return Command.SINGLE_SUCCESS;
+                .then(
+                    Commands.literal("list")
+                        .then(AttackObjective.registerList())
+                        .then(FollowObjective.registerList()))
+                .then(
+                    Commands.literal("set")
+                        .then(AttackObjective.registerSet())
+                        .then(FollowObjective.registerSet()))
+                .then(
+                    Commands.literal("remove")
+                        .then(AttackObjective.registerRemove())
+                        .then(FollowObjective.registerRemove())));
   }
 }

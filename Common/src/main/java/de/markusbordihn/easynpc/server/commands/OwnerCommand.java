@@ -41,33 +41,35 @@ public class OwnerCommand extends Command {
         .then(
             Commands.literal("set")
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .then(
                             Commands.argument("player", EntityArgument.player())
                                 .executes(
                                     context ->
                                         setOwner(
                                             context.getSource(),
-                                            EasyNPCArgument.getEntityWithAccess(context, "target"),
+                                            EasyNPCArgument.getEntityWithAccess(
+                                                context, NPC_TARGET_ARGUMENT),
                                             EntityArgument.getPlayer(context, "player"))))))
         .then(
             Commands.literal("get")
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .executes(
                             context ->
                                 getOwner(
                                     context.getSource(),
-                                    EasyNPCArgument.getEntity(context, "target")))))
+                                    EasyNPCArgument.getEntity(context, NPC_TARGET_ARGUMENT)))))
         .then(
             Commands.literal("remove")
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .executes(
                             context ->
                                 removeOwner(
                                     context.getSource(),
-                                    EasyNPCArgument.getEntityWithAccess(context, "target")))));
+                                    EasyNPCArgument.getEntityWithAccess(
+                                        context, NPC_TARGET_ARGUMENT)))));
   }
 
   private static int setOwner(

@@ -99,7 +99,7 @@ public class DialogArgument implements ArgumentType<Pair<UUID, String>> {
           && !dialogDataEntriesCache.isEmpty()
           && dialogDataEntriesCache.containsKey(idString)) {
         DialogDataEntry dialogDataEntry = dialogDataEntriesCache.get(idString);
-        log.info("Found dialog id {}: {}", idString, dialogDataEntry);
+        log.debug("Found dialog id {}: {}", idString, dialogDataEntry);
         UUID uuid = dialogDataEntry.getId();
         stringReader.setCursor(stringReader.getCursor() + uuid.toString().length());
         return new Pair<>(uuid, idString);

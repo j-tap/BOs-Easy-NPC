@@ -48,7 +48,7 @@ public class RenderCommand extends Command {
                             commandSourceStack ->
                                 commandSourceStack.hasPermission(Commands.LEVEL_ALL))
                         .then(
-                            Commands.argument("target", EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .then(
                                     Commands.argument("type", StringArgumentType.string())
                                         .suggests(RenderTypeSuggestions::suggest)
@@ -57,7 +57,7 @@ public class RenderCommand extends Command {
                                                 setRenderType(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     RenderType.get(
                                                         StringArgumentType.getString(
                                                             context, "type")))))))
@@ -67,7 +67,7 @@ public class RenderCommand extends Command {
                             commandSourceStack ->
                                 commandSourceStack.hasPermission(Commands.LEVEL_ALL))
                         .then(
-                            Commands.argument("target", EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .then(
                                     Commands.argument("entity", EntityTypeArgument.entityType())
                                         .executes(
@@ -75,7 +75,7 @@ public class RenderCommand extends Command {
                                                 setRenderEntityType(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     EntityTypeArgument.getEntityType(
                                                         context, "entity")))))));
   }

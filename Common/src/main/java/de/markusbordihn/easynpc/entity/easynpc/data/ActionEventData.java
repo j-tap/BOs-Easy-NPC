@@ -34,7 +34,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.PathfinderMob;
 
 public interface ActionEventData<E extends PathfinderMob> extends EasyNPC<E> {
@@ -166,36 +165,13 @@ public interface ActionEventData<E extends PathfinderMob> extends EasyNPC<E> {
     this.setActionEventSet(actionEventSet);
   }
 
-  default void handleActionInteractionEvent(ServerPlayer serverPlayer) {
-    if (!this.hasActionEvent(ActionEventType.ON_INTERACTION)) {
+  default void handleActionEvent(ActionEventType actionEventType, ServerPlayer serverPlayer) {
+    if (!this.hasActionEvent(actionEventType)) {
       return;
     }
-    ActionDataSet actionDataSet = this.getActionDataSet(ActionEventType.ON_INTERACTION);
     ActionHandler<E> actionHandler = this.getEasyNPCActionHandler();
-    if (actionDataSet != null && actionHandler != null) {
-      actionHandler.executeActions(actionDataSet, serverPlayer);
-    }
-  }
-
-  default void handleActionHurtEvent(DamageSource damageSource, float damage) {
-    if (!this.hasActionEvent(ActionEventType.ON_HURT)) {
-      return;
-    }
-    ActionDataEntry actionDataEntry = this.getActionEvent(ActionEventType.ON_HURT);
-    ActionHandler<E> actionHandler = this.getEasyNPCActionHandler();
-    if (actionDataEntry != null && actionDataEntry.isValidAndNotEmpty() && actionHandler != null) {
-      actionHandler.executeAction(actionDataEntry, damageSource);
-    }
-  }
-
-  default void handleActionDieEvent(DamageSource damageSource) {
-    if (!this.hasActionEvent(ActionEventType.ON_DEATH)) {
-      return;
-    }
-    ActionDataEntry actionDataEntry = this.getActionEvent(ActionEventType.ON_DEATH);
-    ActionHandler<E> actionHandler = this.getEasyNPCActionHandler();
-    if (actionDataEntry != null && actionDataEntry.isValidAndNotEmpty() && actionHandler != null) {
-      actionHandler.executeAction(actionDataEntry, damageSource);
+    if (actionHandler != null) {
+      actionHandler.executeActions(this.getActionDataSet(actionEventType), serverPlayer);
     }
   }
 }

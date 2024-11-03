@@ -61,9 +61,10 @@ public class ScreenHelper {
       float xRot,
       LivingEntity livingEntity) {
     // Prepare Renderer
+    boolean isDead = livingEntity.isDeadOrDying();
     Minecraft minecraft = Minecraft.getInstance();
-    float rotationY = (float) Math.atan(yRot / 40.0F);
-    float rotationX = (float) Math.atan(xRot / 40.0F);
+    float rotationY = (float) Math.atan((isDead ? 25F : yRot) / 40.0F);
+    float rotationX = (float) Math.atan((isDead ? -25F : xRot) / 40.0F);
     Quaternionf quaternionfZ = (new Quaternionf()).rotateZ(3.1415927F);
     Quaternionf quaternionfX = (new Quaternionf()).rotateX(rotationX * 20.0F * 0.017453292F);
     quaternionfZ.mul(quaternionfX);
@@ -105,7 +106,11 @@ public class ScreenHelper {
 
     // Render Entity
     guiGraphics.pose().pushPose();
-    guiGraphics.pose().translate(x, y, 1050.0D);
+    if (isDead) {
+      guiGraphics.pose().translate(x - 25.0D, y - 30.0D, 1050.0D);
+    } else {
+      guiGraphics.pose().translate(x, y, 1050.0D);
+    }
     guiGraphics.pose().scale(scale, scale, -scale);
     guiGraphics.pose().mulPose(quaternionfZ);
     Lighting.setupForEntityInInventory();

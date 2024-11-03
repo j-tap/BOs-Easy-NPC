@@ -60,12 +60,10 @@ public class EntityTypeArgument implements ArgumentType<EntityType<? extends Ent
   public EntityType<? extends Entity> parse(final StringReader stringReader)
       throws CommandSyntaxException {
     String entityName = stringReader.getRemaining();
-    EntityType<? extends Entity> entityType = EntityType.byString(entityName).orElse(null);
-    if (entityType != null) {
-      stringReader.setCursor(stringReader.getCursor() + entityName.length());
-      return entityType;
-    }
-    throw ERROR_UNKNOWN_ENTITY.create();
+    EntityType<? extends Entity> entityType =
+        EntityType.byString(entityName).orElseThrow(ERROR_UNKNOWN_ENTITY::create);
+    stringReader.setCursor(stringReader.getCursor() + entityName.length());
+    return entityType;
   }
 
   @Override

@@ -38,7 +38,7 @@ public class InteractCommand extends Command {
                 .requires(
                     commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_ALL))
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .then(
                             Commands.argument("position", BlockPosArgument.blockPos())
                                 .executes(
@@ -47,7 +47,8 @@ public class InteractCommand extends Command {
                                           BlockPosArgument.getLoadedBlockPos(context, "position");
                                       return interactWithBlock(
                                           context.getSource(),
-                                          EasyNPCArgument.getEntityWithAccess(context, "target"),
+                                          EasyNPCArgument.getEntityWithAccess(
+                                              context, NPC_TARGET_ARGUMENT),
                                           blockPos);
                                     }))));
   }

@@ -20,6 +20,7 @@
 package de.markusbordihn.easynpc.entity.easynpc;
 
 import de.markusbordihn.easynpc.Constants;
+import de.markusbordihn.easynpc.data.action.ActionEventType;
 import de.markusbordihn.easynpc.data.synched.SynchedDataIndex;
 import de.markusbordihn.easynpc.entity.easynpc.data.ActionEventData;
 import de.markusbordihn.easynpc.entity.easynpc.data.AttackData;
@@ -68,6 +69,7 @@ import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.npc.Npc;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.DimensionTransition;
@@ -317,7 +319,8 @@ public interface EasyNPC<E extends PathfinderMob> extends Npc {
 
     ActionEventData<E> actionEventData = getEasyNPCActionEventData();
     if (actionEventData != null) {
-      actionEventData.handleActionDieEvent(damageSource);
+      actionEventData.handleActionEvent(
+          ActionEventType.ON_DEATH, getServerPlayerFromDamageSource(damageSource));
     }
   }
 
@@ -331,8 +334,20 @@ public interface EasyNPC<E extends PathfinderMob> extends Npc {
   default void handleHurtEvent(DamageSource damageSource, float damage) {
     ActionEventData<E> actionEventData = getEasyNPCActionEventData();
     if (actionEventData != null) {
-      actionEventData.handleActionHurtEvent(damageSource, damage);
+      actionEventData.handleActionEvent(
+          ActionEventType.ON_HURT, getServerPlayerFromDamageSource(damageSource));
     }
+  }
+
+  default ServerPlayer getServerPlayerFromDamageSource(DamageSource damageSource) {
+    if (damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
+      return serverPlayer;
+    }
+    if (damageSource.getDirectEntity() instanceof Projectile projectile
+        && projectile.getOwner() instanceof ServerPlayer serverPlayerOfProjectile) {
+      return serverPlayerOfProjectile;
+    }
+    return null;
   }
 
   <T> void defineSynchedEntityData(
