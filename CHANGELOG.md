@@ -8,6 +8,21 @@ For the full changelog, please go to the [GitHub History][history] instead.
 Note: Please always back up your world / NPCs before updating to a new version!
 Check the [upgrade guide][upgrade_guide] for more information.
 
+### 5.7.4
+
+- Fixed #369 by allowing multiple actions for the `ActionHurtEvent` and `ActionDieEvent`.
+- Fixed #366 by adding a basic `/easy_npc objective <NPC> set follow ...` and
+  `/easy_npc objective <NPC> remove follow ...`
+  commands.
+- Fixed issue with some objectives are not visible in the objective screen but are still active.
+- Added projectile owner detection for the damage source based events.
+- Added fixed death position for the dialog screen.
+- Added commands wiki page for better command documentation.
+
+### 5.7.3
+
+- Fixed #367 by re-ordering network payload registration for Fabric 1.21.1
+
 ### 5.7.2
 
 - Fixed #364 by adding additional checks and logging for entity data serialization and networking.

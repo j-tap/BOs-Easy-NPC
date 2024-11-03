@@ -31,6 +31,7 @@ import de.markusbordihn.easynpc.entity.easynpc.EasyNPC;
 import de.markusbordihn.easynpc.entity.easynpc.ai.goal.ResetUniversalAngerTargetGoal;
 import de.markusbordihn.easynpc.network.syncher.EntityDataSerializersManager;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
@@ -85,15 +86,27 @@ public interface ObjectiveData<T extends PathfinderMob> extends EasyNPC<T> {
     return getObjectiveDataSet() != null && getObjectiveDataSet().hasObjectives();
   }
 
-  default ObjectiveDataEntry getObjective(ObjectiveType objectiveType) {
-    return getObjectiveDataSet() != null ? getObjectiveDataSet().getObjective(objectiveType) : null;
+  default boolean hasObjectives(Set<ObjectiveType> objectiveTypes) {
+    return getObjectiveDataSet() != null && getObjectiveDataSet().hasObjectives(objectiveTypes);
   }
 
-  default void removeObjective(ObjectiveType objectiveType) {
+  default ObjectiveDataEntry getObjective(ObjectiveType objectiveType) {
+    return getObjectiveDataSet() != null && objectiveType != null
+        ? getObjectiveDataSet().getObjective(objectiveType)
+        : null;
+  }
+
+  default Optional<ObjectiveDataEntry> getObjectiveEntry(ObjectiveType objectiveType) {
+    return getObjectiveDataSet() != null
+        ? Optional.ofNullable(getObjectiveDataSet().getObjective(objectiveType))
+        : Optional.empty();
+  }
+
+  default boolean removeObjective(ObjectiveType objectiveType) {
     if (objectiveType == null) {
-      return;
+      return false;
     }
-    getObjectiveDataSet().removeObjective(objectiveType);
+    return getObjectiveDataSet().removeObjective(objectiveType);
   }
 
   default void addObjective(ObjectiveDataEntry objectiveDataEntry) {
@@ -310,6 +323,10 @@ public interface ObjectiveData<T extends PathfinderMob> extends EasyNPC<T> {
       }
       tickerData.resetTicker(TickerType.CUSTOM_OBJECTIVE_DELAYED_REGISTRATION);
     }
+  }
+
+  default boolean removeCustomObjective(ObjectiveType objectiveType) {
+    return removeCustomObjective(getObjective(objectiveType));
   }
 
   default boolean removeCustomObjective(ObjectiveDataEntry objectiveDataEntry) {

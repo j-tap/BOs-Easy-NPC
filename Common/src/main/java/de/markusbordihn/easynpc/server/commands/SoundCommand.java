@@ -44,7 +44,7 @@ public class SoundCommand extends Command {
         .then(
             Commands.literal("set")
                 .then(
-                    Commands.argument("target", EasyNPCArgument.npc())
+                    Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                         .then(
                             Commands.argument("type", StringArgumentType.string())
                                 .suggests(SoundTypeSuggestions::suggest)
@@ -56,7 +56,7 @@ public class SoundCommand extends Command {
                                                 setSoundType(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     SoundType.get(
                                                         StringArgumentType.getString(
                                                             context, "type")),

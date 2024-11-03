@@ -354,7 +354,10 @@ public final class ObjectiveDataEntry {
     compoundTag.putInt(DATA_PRIORITY_TAG, this.priority);
 
     // Store id only if it is not the same as the objective type.
-    if (this.id != null && !this.id.isEmpty() && !this.id.equals(this.objectiveType.name())) {
+    if (this.id != null
+        && !this.id.isEmpty()
+        && !this.id.equals(this.objectiveType.name())
+        && !this.id.toUpperCase().equals(this.objectiveType.name())) {
       compoundTag.putString(DATA_ID_TAG, this.id);
     }
 

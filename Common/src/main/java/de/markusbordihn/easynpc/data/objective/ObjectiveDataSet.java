@@ -95,6 +95,15 @@ public class ObjectiveDataSet {
     return this.hasObjectives;
   }
 
+  public boolean hasObjectives(Set<ObjectiveType> objectiveTypes) {
+    for (ObjectiveType objectiveType : objectiveTypes) {
+      if (this.hasObjective(objectiveType)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void addObjective(ObjectiveDataEntry objectiveDataEntry) {
     if (objectiveDataEntry == null || objectiveDataEntry.getType() == ObjectiveType.NONE) {
       return;
@@ -103,8 +112,8 @@ public class ObjectiveDataSet {
     this.updateTargetFlags();
   }
 
-  public void removeObjective(ObjectiveType objectiveType) {
-    this.removeObjective(objectiveType.name());
+  public boolean removeObjective(ObjectiveType objectiveType) {
+    return this.removeObjective(objectiveType.name());
   }
 
   public boolean removeObjective(ObjectiveDataEntry objectiveDataEntry) {

@@ -20,6 +20,7 @@
 package de.markusbordihn.easynpc.entity.easynpc.handlers;
 
 import de.markusbordihn.easynpc.Constants;
+import de.markusbordihn.easynpc.data.action.ActionEventType;
 import de.markusbordihn.easynpc.entity.easynpc.EasyNPC;
 import de.markusbordihn.easynpc.entity.easynpc.data.ActionEventData;
 import de.markusbordihn.easynpc.entity.easynpc.data.ConfigurationData;
@@ -102,7 +103,7 @@ public class InteractionHandler {
     // Handle action event data.
     ActionEventData<?> actionEventData = easyNPC.getEasyNPCActionEventData();
     if (actionEventData != null) {
-      actionEventData.handleActionInteractionEvent(serverPlayer);
+      actionEventData.handleActionEvent(ActionEventType.ON_INTERACTION, serverPlayer);
     }
 
     return InteractionResult.PASS;

@@ -43,7 +43,7 @@ public class SkinCommand extends Command {
                             commandSourceStack ->
                                 commandSourceStack.hasPermission(Commands.LEVEL_ALL))
                         .then(
-                            Commands.argument("target", EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .then(
                                     Commands.argument("variant", StringArgumentType.string())
                                         .executes(
@@ -51,7 +51,7 @@ public class SkinCommand extends Command {
                                                 setDefaultSkinVariant(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, "target"),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     StringArgumentType.getString(
                                                         context, "variant")))))));
   }

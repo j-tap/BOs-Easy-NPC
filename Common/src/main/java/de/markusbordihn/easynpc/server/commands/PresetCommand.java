@@ -54,7 +54,6 @@ public class PresetCommand extends Command {
   private static final String LOCAL_ARG = "local";
   private static final String LOCATION_ARG = "location";
   private static final String PRESET_ARG = "preset";
-  private static final String TARGET_ARG = "target";
   private static final String NAME_ARG = "name";
   private static final String UUID_ARG = "uuid";
   private static final String WORLD_ARG = "world";
@@ -69,13 +68,13 @@ public class PresetCommand extends Command {
                 .then(
                     Commands.literal(LOCAL_ARG)
                         .then(
-                            Commands.argument(TARGET_ARG, EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .executes(
                                     context ->
                                         exportLocalPreset(
                                             context.getSource(),
                                             EasyNPCArgument.getEntityWithAccess(
-                                                context, TARGET_ARG),
+                                                context, NPC_TARGET_ARGUMENT),
                                             null))
                                 .then(
                                     Commands.argument(NAME_ARG, StringArgumentType.string())
@@ -84,19 +83,19 @@ public class PresetCommand extends Command {
                                                 exportLocalPreset(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, TARGET_ARG),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     StringArgumentType.getString(
                                                         context, NAME_ARG))))))
                 .then(
                     Commands.literal(CUSTOM_ARG)
                         .then(
-                            Commands.argument(TARGET_ARG, EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .executes(
                                     context ->
                                         exportCustomPreset(
                                             context.getSource(),
                                             EasyNPCArgument.getEntityWithAccess(
-                                                context, TARGET_ARG),
+                                                context, NPC_TARGET_ARGUMENT),
                                             null))
                                 .then(
                                     Commands.argument(NAME_ARG, StringArgumentType.string())
@@ -105,19 +104,19 @@ public class PresetCommand extends Command {
                                                 exportCustomPreset(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, TARGET_ARG),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     StringArgumentType.getString(
                                                         context, NAME_ARG))))))
                 .then(
                     Commands.literal(WORLD_ARG)
                         .then(
-                            Commands.argument(TARGET_ARG, EasyNPCArgument.npc())
+                            Commands.argument(NPC_TARGET_ARGUMENT, EasyNPCArgument.npc())
                                 .executes(
                                     context ->
                                         exportWorldPreset(
                                             context.getSource(),
                                             EasyNPCArgument.getEntityWithAccess(
-                                                context, TARGET_ARG),
+                                                context, NPC_TARGET_ARGUMENT),
                                             null))
                                 .then(
                                     Commands.argument(NAME_ARG, StringArgumentType.string())
@@ -126,7 +125,7 @@ public class PresetCommand extends Command {
                                                 exportWorldPreset(
                                                     context.getSource(),
                                                     EasyNPCArgument.getEntityWithAccess(
-                                                        context, TARGET_ARG),
+                                                        context, NPC_TARGET_ARGUMENT),
                                                     StringArgumentType.getString(
                                                         context, NAME_ARG)))))))
         .then(

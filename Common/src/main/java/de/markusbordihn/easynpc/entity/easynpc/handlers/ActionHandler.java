@@ -40,7 +40,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -262,63 +261,54 @@ public interface ActionHandler<E extends PathfinderMob> extends EasyNPC<E> {
       return;
     }
 
-    // In this case we pre-check the action data set to execute them in the correct order
-    // and avoid multiple screen actions or other unwanted behavior.
-    // - Filter close dialog action and execute them at the end of the action list.
-    // - Filter screen actions and execute only the first one.
-    ActionDataEntry closeDialogActionDataEntry = null;
+    ActionDataEntry closeDialogAction = null;
     boolean hasScreenAction = false;
+
     for (ActionDataEntry actionDataEntry : actionDataSet.getEntries()) {
       ActionDataType actionType = actionDataEntry.actionDataType();
+
+      // Check for close dialog action and execute it at the end.
       if (actionType == ActionDataType.CLOSE_DIALOG) {
-        if (closeDialogActionDataEntry == null) {
-          closeDialogActionDataEntry = actionDataEntry;
+        if (closeDialogAction == null) {
+          closeDialogAction = actionDataEntry;
         } else {
           log.warn("Multiple close dialog actions found in action data set {}!", actionDataSet);
         }
-      } else {
-        // Validate screen actions and execute only the first one.
-        if (actionType == ActionDataType.OPEN_DEFAULT_DIALOG
-            || actionType == ActionDataType.OPEN_NAMED_DIALOG
-            || actionType == ActionDataType.OPEN_TRADING_SCREEN) {
+        continue;
+      }
 
-          // Skip additional screen actions if one was already executed.
-          if (hasScreenAction) {
-            log.debug(
-                "Ignoring {}. Multiple screen actions found in action data set {}! Only the first valid will be executed. ",
-                actionType,
-                actionDataSet);
-            continue;
-          }
+      // Check for screen actions and execute only the first valid one.
+      if (actionType == ActionDataType.OPEN_DEFAULT_DIALOG
+          || actionType == ActionDataType.OPEN_NAMED_DIALOG
+          || actionType == ActionDataType.OPEN_TRADING_SCREEN) {
 
-          // Validate specific screen actions and their data.
-          if ((actionType == ActionDataType.OPEN_DEFAULT_DIALOG
-                  && !this.getEasyNPCDialogData().hasDialog())
-              || (actionType == ActionDataType.OPEN_NAMED_DIALOG
-                  && !this.getEasyNPCDialogData().hasDialog(actionDataEntry.command()))
-              || (actionType == ActionDataType.OPEN_TRADING_SCREEN
-                  && !this.getEasyNPCTradingData().hasTradingData())) {
-            log.debug("Ignoring {} action because no data is available.", actionType);
-            continue;
-          }
-
-          hasScreenAction = true;
+        if (hasScreenAction) {
+          log.debug(
+              "Ignoring {}. Multiple screen actions found in action data set {}! Only the first valid will be executed.",
+              actionType,
+              actionDataSet);
+          continue;
         }
 
-        this.executeAction(actionDataEntry, serverPlayer);
+        if ((actionType == ActionDataType.OPEN_DEFAULT_DIALOG
+                && !this.getEasyNPCDialogData().hasDialog())
+            || (actionType == ActionDataType.OPEN_NAMED_DIALOG
+                && !this.getEasyNPCDialogData().hasDialog(actionDataEntry.command()))
+            || (actionType == ActionDataType.OPEN_TRADING_SCREEN
+                && !this.getEasyNPCTradingData().hasTradingData())) {
+          log.debug("Ignoring {} action because no data is available.", actionType);
+          continue;
+        }
+
+        hasScreenAction = true;
       }
-    }
 
-    // Execute close dialog action and the end of the action list.
-    if (closeDialogActionDataEntry != null) {
-      this.executeAction(closeDialogActionDataEntry, serverPlayer);
-    }
-  }
-
-  default void executeAction(ActionDataEntry actionDataEntry, DamageSource damageSource) {
-    Entity entity = damageSource.getEntity();
-    if (entity instanceof ServerPlayer serverPlayer) {
       this.executeAction(actionDataEntry, serverPlayer);
+    }
+
+    // Execute close dialog action at the end.
+    if (closeDialogAction != null) {
+      this.executeAction(closeDialogAction, serverPlayer);
     }
   }
 
