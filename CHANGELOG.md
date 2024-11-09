@@ -8,6 +8,10 @@ For the full changelog, please go to the [GitHub History][history] instead.
 Note: Please always back up your world / NPCs before updating to a new version!
 Check the [upgrade guide][upgrade_guide] for more information.
 
+### 5.5.10
+
+- Fixed #373, #372, #365, #328 by validate all entity tags.
+
 ### 5.5.9
 
 - Reworked the whole wiki and documentation to match the 6.x release version.
