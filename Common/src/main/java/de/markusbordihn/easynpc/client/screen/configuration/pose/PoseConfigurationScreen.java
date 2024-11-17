@@ -19,6 +19,7 @@
 
 package de.markusbordihn.easynpc.client.screen.configuration.pose;
 
+import de.markusbordihn.easynpc.client.screen.components.RangeSliderButton;
 import de.markusbordihn.easynpc.client.screen.components.SliderButton;
 import de.markusbordihn.easynpc.client.screen.components.TextButton;
 import de.markusbordihn.easynpc.client.screen.configuration.ConfigurationScreen;
@@ -46,35 +47,25 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
     this.modelData = this.getEasyNPC().getEasyNPCModelData();
   }
 
-  protected SliderButton createRotationSliderCompact(
+  protected RangeSliderButton createRotationSlider(
       int left, int top, ModelPart modelPart, String label) {
-    return createRotationSlider(left, top, modelPart, label, true);
-  }
-
-  protected SliderButton createRotationSlider(
-      int left, int top, ModelPart modelPart, String label, boolean compact) {
     int sliderWidth = 34;
-    int sliderLeftPosition = left;
-
-    // Shift left position for compact mode ans specific model parts
-    if (compact
-        && (modelPart == ModelPart.BODY
-            || modelPart == ModelPart.LEFT_ARM
-            || modelPart == ModelPart.LEFT_LEG)) {
-      sliderLeftPosition = left + 10;
-    }
+    int sliderHeight = 16;
+    int sliderLeftPosition = left + 10;
 
     // Model Part Rotation
     CustomRotation modelPartRotation = this.modelData.getModelPartRotation(modelPart);
-    SliderButton sliderButtonX =
+    RangeSliderButton sliderButtonX =
         this.addRenderableWidget(
-            new SliderButton(
+            new RangeSliderButton(
                 sliderLeftPosition,
                 top,
                 sliderWidth,
-                label + "RotationX",
-                (float) Math.toDegrees(modelPartRotation.x()),
+                sliderHeight,
+                Math.toDegrees(modelPartRotation.x()),
+                0,
                 SliderButton.Type.DEGREE,
+                false,
                 slider -> {
                   CustomRotation currentModelPartRotation =
                       this.modelData.getModelPartRotation(modelPart);
@@ -87,15 +78,17 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
                               currentModelPartRotation.y(),
                               currentModelPartRotation.z()));
                 }));
-    SliderButton sliderButtonY =
+    RangeSliderButton sliderButtonY =
         this.addRenderableWidget(
-            new SliderButton(
+            new RangeSliderButton(
                 sliderButtonX.x + sliderButtonX.getWidth(),
                 top,
                 sliderWidth,
-                label + "RotationY",
-                (float) Math.toDegrees(modelPartRotation.y()),
+                sliderHeight,
+                Math.toDegrees(modelPartRotation.y()),
+                0,
                 SliderButton.Type.DEGREE,
+                false,
                 slider -> {
                   CustomRotation currentModelPartRotation =
                       this.modelData.getModelPartRotation(modelPart);
@@ -108,15 +101,17 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
                               (float) Math.toRadians(slider.getTargetValue()),
                               currentModelPartRotation.z()));
                 }));
-    SliderButton sliderButtonZ =
+    RangeSliderButton sliderButtonZ =
         this.addRenderableWidget(
-            new SliderButton(
+            new RangeSliderButton(
                 sliderButtonY.x + sliderButtonY.getWidth(),
                 top,
                 sliderWidth,
-                label + "RotationZ",
-                (float) Math.toDegrees(modelPartRotation.z()),
+                sliderHeight,
+                Math.toDegrees(modelPartRotation.z()),
+                0,
                 SliderButton.Type.DEGREE,
+                false,
                 slider -> {
                   CustomRotation currentModelPartRotation =
                       this.modelData.getModelPartRotation(modelPart);
@@ -130,74 +125,70 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
                               (float) Math.toRadians(slider.getTargetValue())));
                 }));
 
-    if (compact) {
-      int resetButtonLeftPosition =
-          switch (modelPart) {
-            case BODY, LEFT_ARM, LEFT_LEG -> left;
-            default -> sliderButtonZ.x + sliderButtonZ.getWidth();
-          };
-      this.addRenderableWidget(
-          new TextButton(
-              resetButtonLeftPosition,
-              top,
-              10,
-              TextComponent.getText("↺"),
-              button -> {
-                sliderButtonX.reset();
-                sliderButtonY.reset();
-                sliderButtonZ.reset();
-                NetworkMessageHandlerManager.getServerHandler()
-                    .rotationChange(
-                        this.getEasyNPCUUID(), modelPart, new CustomRotation(0f, 0f, 0f));
-              }));
-    } else {
-      this.addRenderableWidget(
-          new TextButton(
-              sliderButtonX.x,
-              top + 16,
-              sliderWidth * 3,
-              "reset",
-              button -> {
-                sliderButtonX.reset();
-                sliderButtonY.reset();
-                sliderButtonZ.reset();
-                NetworkMessageHandlerManager.getServerHandler()
-                    .rotationChange(
-                        this.getEasyNPCUUID(), modelPart, new CustomRotation(0f, 0f, 0f));
-              }));
-    }
+    // Slider Edit / Done Button
+    this.addRenderableWidget(
+        new TextButton(
+            left,
+            top,
+            10,
+            RangeSliderButton.EDIT_TEXT,
+            button -> {
+              if (button.getMessage() == RangeSliderButton.EDIT_TEXT) {
+                sliderButtonX.showTextField();
+                sliderButtonY.showTextField();
+                sliderButtonZ.showTextField();
+                button.setMessage(RangeSliderButton.DONE_TEXT);
+              } else {
+                sliderButtonX.showSliderButton();
+                sliderButtonY.showSliderButton();
+                sliderButtonZ.showSliderButton();
+                button.setMessage(RangeSliderButton.EDIT_TEXT);
+              }
+            }));
+
+    // Slider reset button
+    int resetButtonLeftPosition = sliderButtonZ.x + sliderButtonZ.getWidth();
+    this.addRenderableWidget(
+        new TextButton(
+            resetButtonLeftPosition,
+            top,
+            10,
+            TextComponent.getText("↺"),
+            button -> {
+              sliderButtonX.reset();
+              sliderButtonY.reset();
+              sliderButtonZ.reset();
+              NetworkMessageHandlerManager.getServerHandler()
+                  .rotationChange(this.getEasyNPCUUID(), modelPart, new CustomRotation(0f, 0f, 0f));
+            }));
+
     return sliderButtonX;
   }
 
-  protected SliderButton createPositionSliderCompact(
+  protected RangeSliderButton createPositionSliderCompact(
       int left, int top, ModelPart modelPart, String label) {
     return createPositionSlider(left, top, modelPart, label, true);
   }
 
-  protected SliderButton createPositionSlider(
+  protected RangeSliderButton createPositionSlider(
       int left, int top, ModelPart modelPart, String label, boolean compact) {
     int sliderWidth = 34;
-    int sliderLeftPosition = left;
+    int sliderHeight = 16;
+    int sliderLeftPosition = left + 10;
 
-    // Shift left position for compact mode ans specific model parts
-    if (compact
-        && (modelPart == ModelPart.BODY
-            || modelPart == ModelPart.LEFT_ARM
-            || modelPart == ModelPart.LEFT_LEG)) {
-      sliderLeftPosition = left + 10;
-    }
-
-    // Model Part Position
+    // Model Part Position.
     CustomPosition modelPartPosition = this.modelData.getModelPartPosition(modelPart);
-    SliderButton sliderButtonX =
+    RangeSliderButton sliderButtonX =
         this.addRenderableWidget(
-            new SliderButton(
+            new RangeSliderButton(
                 sliderLeftPosition,
                 top,
                 sliderWidth,
-                label + "PositionX",
+                sliderHeight,
                 modelPartPosition.x(),
+                0,
                 SliderButton.Type.POSITION,
+                false,
                 slider -> {
                   CustomPosition currentModelPartPosition =
                       this.modelData.getModelPartPosition(modelPart);
@@ -210,15 +201,17 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
                               currentModelPartPosition.y(),
                               currentModelPartPosition.z()));
                 }));
-    SliderButton sliderButtonY =
+    RangeSliderButton sliderButtonY =
         this.addRenderableWidget(
-            new SliderButton(
+            new RangeSliderButton(
                 sliderButtonX.x + sliderButtonX.getWidth(),
                 top,
                 sliderWidth,
-                label + "PositionY",
+                sliderHeight,
                 modelPartPosition.y(),
+                0,
                 SliderButton.Type.POSITION,
+                false,
                 slider -> {
                   CustomPosition currentModelPartPosition =
                       this.modelData.getModelPartPosition(modelPart);
@@ -231,15 +224,17 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
                               slider.getTargetValue(),
                               currentModelPartPosition.z()));
                 }));
-    SliderButton sliderButtonZ =
+    RangeSliderButton sliderButtonZ =
         this.addRenderableWidget(
-            new SliderButton(
+            new RangeSliderButton(
                 sliderButtonY.x + sliderButtonY.getWidth(),
                 top,
                 sliderWidth,
-                label + "PositionZ",
+                sliderHeight,
                 modelPartPosition.z(),
+                0,
                 SliderButton.Type.POSITION,
+                false,
                 slider -> {
                   CustomPosition currentModelPartPosition =
                       this.modelData.getModelPartPosition(modelPart);
@@ -253,43 +248,44 @@ public class PoseConfigurationScreen<T extends ConfigurationMenu> extends Config
                               slider.getTargetValue()));
                 }));
 
-    if (compact) {
-      int resetButtonLeftPosition =
-          switch (modelPart) {
-            case BODY, LEFT_ARM, LEFT_LEG -> left;
-            default -> sliderButtonZ.x + sliderButtonZ.getWidth();
-          };
-      // Switch reset button left position for compact mode ans specific model parts
-      this.addRenderableWidget(
-          new TextButton(
-              resetButtonLeftPosition,
-              top,
-              10,
-              TextComponent.getText("↺"),
-              button -> {
-                sliderButtonX.reset();
-                sliderButtonY.reset();
-                sliderButtonZ.reset();
-                NetworkMessageHandlerManager.getServerHandler()
-                    .modelPositionChange(
-                        this.getEasyNPCUUID(), modelPart, new CustomPosition(0f, 0f, 0f));
-              }));
-    } else {
-      this.addRenderableWidget(
-          new TextButton(
-              sliderButtonX.x,
-              top + 20,
-              sliderWidth * 3,
-              "reset",
-              button -> {
-                sliderButtonX.reset();
-                sliderButtonY.reset();
-                sliderButtonZ.reset();
-                NetworkMessageHandlerManager.getServerHandler()
-                    .modelPositionChange(
-                        this.getEasyNPCUUID(), modelPart, new CustomPosition(0f, 0f, 0f));
-              }));
-    }
+    // Slider Edit / Done Button
+    this.addRenderableWidget(
+        new TextButton(
+            left,
+            top,
+            10,
+            RangeSliderButton.EDIT_TEXT,
+            button -> {
+              if (button.getMessage() == RangeSliderButton.EDIT_TEXT) {
+                sliderButtonX.showTextField();
+                sliderButtonY.showTextField();
+                sliderButtonZ.showTextField();
+                button.setMessage(RangeSliderButton.DONE_TEXT);
+              } else {
+                sliderButtonX.showSliderButton();
+                sliderButtonY.showSliderButton();
+                sliderButtonZ.showSliderButton();
+                button.setMessage(RangeSliderButton.EDIT_TEXT);
+              }
+            }));
+
+    // Slider reset button
+    int resetButtonLeftPosition = sliderButtonZ.x + sliderButtonZ.getWidth();
+    this.addRenderableWidget(
+        new TextButton(
+            resetButtonLeftPosition,
+            top,
+            10,
+            TextComponent.getText("↺"),
+            button -> {
+              sliderButtonX.reset();
+              sliderButtonY.reset();
+              sliderButtonZ.reset();
+              NetworkMessageHandlerManager.getServerHandler()
+                  .modelPositionChange(
+                      this.getEasyNPCUUID(), modelPart, new CustomPosition(0f, 0f, 0f));
+            }));
+
     return sliderButtonX;
   }
 

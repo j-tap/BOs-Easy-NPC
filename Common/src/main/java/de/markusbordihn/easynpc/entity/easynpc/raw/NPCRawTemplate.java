@@ -31,6 +31,7 @@ import de.markusbordihn.easynpc.entity.easynpc.EasyNPCBase;
 import de.markusbordihn.easynpc.entity.easynpc.handlers.AttackHandler;
 import de.markusbordihn.easynpc.entity.easynpc.handlers.InteractionHandler;
 import de.markusbordihn.easynpc.entity.easynpc.handlers.VisibilityHandler;
+import de.markusbordihn.easynpc.entity.easynpc.npc.ZombieVillager.Variant;
 import de.markusbordihn.easynpc.server.player.FakePlayer;
 import de.markusbordihn.easynpc.utils.TextUtils;
 import java.util.EnumMap;
@@ -69,16 +70,16 @@ import net.minecraft.world.phys.Vec3;
 /*
  * WARNING: This is an automatically generated file, please do not modify it directly!
  */
-public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
+public class NPCRawTemplate extends Zombie implements EasyNPCBase<Zombie> {
 
-  public static final String ID = "zombie_raw";
+  public static final String ID = "npc_raw_template";
 
   protected static final EnumMap<SynchedDataIndex, EntityDataAccessor<?>> entityDataAccessorMap =
       new EnumMap<>(SynchedDataIndex.class);
   private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
   static {
-    EasyNPCBase.registerEasyNPCSyncedData(entityDataAccessorMap, ZombieRaw.class);
+    EasyNPCBase.registerEasyNPCSyncedData(entityDataAccessorMap, NPCRawTemplate.class);
   }
 
   private final EnumMap<TickerType, Integer> tickerMap = new EnumMap<>(TickerType.class);
@@ -92,7 +93,7 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
   private Player tradingPlayer;
   private FakePlayer fakePlayer;
 
-  public ZombieRaw(EntityType<? extends Zombie> entityType, Level level) {
+  public NPCRawTemplate(EntityType<? extends Zombie> entityType, Level level) {
     super(entityType, level);
   }
 
@@ -491,7 +492,7 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
 
   @Override
   public Enum<?> getDefaultVariant() {
-    return Variant.ZOMBIE;
+    return Variant.DEFAULT_VARIANT;
   }
 
   @Override
@@ -541,8 +542,6 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
   }
 
   public enum Variant {
-    DROWNED,
-    HUSK,
-    ZOMBIE
+    DEFAULT_VARIANT
   }
 }
