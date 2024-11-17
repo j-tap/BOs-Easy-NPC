@@ -80,7 +80,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         poseStack,
         this.leftPos + 5,
         this.contentTopPos + 20,
-        this.leftPos + 314,
+        this.leftPos + 324,
         this.contentTopPos + 210,
         0xffeeeeee);
 
@@ -94,9 +94,9 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         0xffbbbbbb);
     fill(
         poseStack,
-        this.leftPos + 198,
+        this.leftPos + 208,
         this.contentTopPos + 20,
-        this.leftPos + 199,
+        this.leftPos + 209,
         this.contentTopPos + 190,
         0xffbbbbbb);
 
@@ -110,7 +110,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         poseStack,
         this.leftPos + 5,
         this.contentTopPos,
-        this.leftPos + 314,
+        this.leftPos + 324,
         this.contentTopPos + 18,
         0xffaaaaaa);
 
@@ -119,7 +119,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         poseStack,
         this.leftPos + 5,
         this.contentTopPos + 191,
-        this.leftPos + 314,
+        this.leftPos + 324,
         this.contentTopPos + 211,
         0xffc6c6c6);
 
@@ -143,7 +143,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         poseStack,
         this.font,
         "Text",
-        headerLeft + 191,
+        headerLeft + 201,
         this.contentTopPos + 5,
         Constants.FONT_COLOR_BLACK);
 
@@ -157,9 +157,9 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         0xff666666);
     fill(
         poseStack,
-        this.leftPos + 198,
+        this.leftPos + 208,
         this.contentTopPos,
-        this.leftPos + 199,
+        this.leftPos + 209,
         this.contentTopPos + 18,
         0xff666666);
 
@@ -273,7 +273,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         int leftPos = left - 75;
 
         // Render edit button and tooltip
-        this.editButton.x = leftPos + 75;
+        this.editButton.x = leftPos + 71;
         this.editButton.y = top;
         this.editButton.render(poseStack, mouseX, mouseY, partialTicks);
         if (this.editButton.isHovered()) {
@@ -298,7 +298,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
         }
 
         // Render edit text button and tooltip
-        this.textEditButton.x = leftPos + 200;
+        this.textEditButton.x = leftPos + 203;
         this.textEditButton.y = top;
         this.textEditButton.render(poseStack, mouseX, mouseY, partialTicks);
         if (this.textEditButton.isHovered()) {
@@ -323,21 +323,21 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
             poseStack,
             AdvancedDialogConfigurationScreen.this.font,
             dialogData.getLabel(16),
-            Math.round((leftPos + 7) / dialogDataScale),
+            Math.round((leftPos + 4) / dialogDataScale),
             dialogDataTopPos,
             fontColor);
         Text.drawString(
             poseStack,
             AdvancedDialogConfigurationScreen.this.font,
             dialogData.getName(21),
-            Math.round((leftPos + 112) / dialogDataScale),
+            Math.round((leftPos + 109) / dialogDataScale),
             dialogDataTopPos,
             fontColor);
         Text.drawString(
             poseStack,
             AdvancedDialogConfigurationScreen.this.font,
             dialogData.getText(21),
-            Math.round((leftPos + 220) / dialogDataScale),
+            Math.round((leftPos + 221) / dialogDataScale),
             dialogDataTopPos,
             fontColor);
         poseStack.popPose();
@@ -347,7 +347,7 @@ public class AdvancedDialogConfigurationScreen<T extends ConfigurationMenu>
             poseStack,
             AdvancedDialogConfigurationScreen.this.leftPos + 5,
             top + 17,
-            AdvancedDialogConfigurationScreen.this.leftPos + 314,
+            AdvancedDialogConfigurationScreen.this.leftPos + 324,
             top + 18,
             0xffaaaaaa);
       }

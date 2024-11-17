@@ -61,15 +61,15 @@ public class PositionConfigurationScreen<T extends ConfigurationMenu>
 
   @Override
   public void renderDefaultScreenBg(PoseStack poseStack, int leftPos, int topPos) {
-    Graphics.blit(poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 210, 40);
+    Graphics.blit(poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 220, 40);
     Graphics.blit(
-        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 203, topPos, 132, 0, 120, 40);
+        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 213, topPos, 132, 0, 120, 40);
     Graphics.blit(
-        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 40, 0, 130, 210, 40);
+        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 40, 0, 130, 220, 40);
     Graphics.blit(
         poseStack,
         Constants.TEXTURE_DEMO_BACKGROUND,
-        leftPos + 203,
+        leftPos + 213,
         topPos + 40,
         132,
         130,

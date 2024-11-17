@@ -26,9 +26,11 @@ import org.apache.logging.log4j.Logger;
 public class ValueUtils {
 
   protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  private static final String POSITION_NUMBER_MATCH_PATTERN = "^-?\\d+(\\.?\\d*)?$";
+  private static final String DEGREE_NUMBER_MATCH_PATTERN = "^-?\\d+(\\.?\\d*)?$";
   private static final String POSITIVE_NUMBER_MATCH_PATTERN = "^\\d+$";
-  private static final String FLOAT_NUMBER_MATCH_PATTERN = "^\\d+(\\.?\\d*)?$";
-  private static final String DOUBLE_NUMBER_MATCH_PATTERN = "^\\d+(\\.?\\d*)?$";
+  private static final String FLOAT_NUMBER_MATCH_PATTERN = "^-?\\d+(\\.?\\d*)?$";
+  private static final String DOUBLE_NUMBER_MATCH_PATTERN = "^-?\\d+(\\.?\\d*)?$";
 
   private ValueUtils() {}
 
@@ -67,8 +69,34 @@ public class ValueUtils {
         && Integer.parseInt(text) >= 0;
   }
 
+  public static boolean isDegreeValue(String text) {
+    return text != null
+        && !text.isEmpty()
+        && text.matches(DEGREE_NUMBER_MATCH_PATTERN)
+        && Double.parseDouble(text) >= -180
+        && Double.parseDouble(text) <= 180;
+  }
+
+  public static boolean isPositionValue(String text) {
+    return text != null
+        && !text.isEmpty()
+        && text.matches(POSITION_NUMBER_MATCH_PATTERN)
+        && Double.parseDouble(text) >= -32000000
+        && Double.parseDouble(text) <= 32000000;
+  }
+
   public static boolean isNumericValue(String text) {
     return text != null && (text.isEmpty() || (text.matches("^-?\\d+$")));
+  }
+
+  public static boolean isPositionValueInRange(String text, double min, double max) {
+    return text != null
+        && !text.isEmpty()
+        && text.matches(POSITION_NUMBER_MATCH_PATTERN)
+        && Double.parseDouble(text) >= -32000000
+        && Double.parseDouble(text) <= 32000000
+        && Double.parseDouble(text) >= min
+        && Double.parseDouble(text) <= max;
   }
 
   public static Double getDoubleValue(String value) {

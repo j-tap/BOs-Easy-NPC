@@ -148,13 +148,13 @@ public interface ScreenInterface {
   }
 
   default void renderDefaultScreenBg(PoseStack poseStack, int leftPos, int topPos) {
-    Graphics.blit(poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 210, 160);
+    Graphics.blit(poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 220, 160);
     Graphics.blit(
-        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 203, topPos, 132, 0, 120, 160);
+        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 213, topPos, 132, 0, 120, 160);
     Graphics.blit(
-        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 77, 0, 5, 210, 170);
+        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 77, 0, 5, 220, 170);
     Graphics.blit(
-        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 203, topPos + 77, 132, 5, 120, 170);
+        poseStack, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 213, topPos + 77, 132, 5, 120, 170);
   }
 
   default void renderDefaultTitleBg(PoseStack poseStack, int leftPos, int topPos) {

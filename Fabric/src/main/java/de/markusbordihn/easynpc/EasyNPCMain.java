@@ -39,6 +39,7 @@ import de.markusbordihn.easynpc.network.NetworkHandlerManagerType;
 import de.markusbordihn.easynpc.network.NetworkMessageHandlerManager;
 import de.markusbordihn.easynpc.network.syncher.EntityDataSerializersManager;
 import de.markusbordihn.easynpc.server.ServerEvents;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -65,7 +66,7 @@ public class EasyNPCMain implements ModInitializer {
     Constants.CONFIG_DIR = FabricLoader.getInstance().getConfigDir();
 
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
-    Config.register();
+    Config.register(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
 
     log.info("{} Entity Data Serializers ...", Constants.LOG_REGISTER_PREFIX);
     EntityDataSerializersManager.register();

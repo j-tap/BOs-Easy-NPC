@@ -17,30 +17,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.easynpc.compat.epicfight.entity;
+package de.markusbordihn.easynpc.client.screen.components;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
+import de.markusbordihn.easynpc.utils.ValueUtils;
+import net.minecraft.client.gui.Font;
 
-public class EpicFightEntityTypes {
-  private static final MobCategory CATEGORY = MobCategory.MISC;
-  private static final int CLIENT_TRACKING_RANGE = 12;
+public class PositionNumberField extends TextField {
 
-  // public static final EntityType<EpicFightPiglin> PIGLIN =
-  //    EntityType.Builder.of(EpicFightPiglin::new, CATEGORY)
-  //        .sized(0.6F, 1.95F)
-  //        .clientTrackingRange(CLIENT_TRACKING_RANGE)
-  //        .build(EpicFightPiglin.ID);
-  // public static final EntityType<EpicFightSkeleton> SKELETON =
-  //    EntityType.Builder.of(EpicFightSkeleton::new, CATEGORY)
-  //        .sized(0.6F, 1.95F)
-  //        .clientTrackingRange(CLIENT_TRACKING_RANGE)
-  //        .build(EpicFightSkeleton.ID);
-  public static final EntityType<EpicFightZombie> ZOMBIE =
-      EntityType.Builder.of(EpicFightZombie::new, CATEGORY)
-          .sized(0.6F, 1.95F)
-          .clientTrackingRange(CLIENT_TRACKING_RANGE)
-          .build(EpicFightZombie.ID);
-
-  private EpicFightEntityTypes() {}
+  public PositionNumberField(
+      Font font,
+      int x,
+      int y,
+      int width,
+      int height,
+      double value,
+      double minValue,
+      double maxValue) {
+    super(font, x, y, width, height, value);
+    this.setFilter(text -> ValueUtils.isPositionValueInRange(text, minValue, maxValue));
+  }
 }

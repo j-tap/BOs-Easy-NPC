@@ -20,6 +20,7 @@
 package de.markusbordihn.easynpc.client.screen.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import de.markusbordihn.easynpc.client.screen.components.SliderButton.Type;
 import de.markusbordihn.easynpc.network.components.TextComponent;
 import de.markusbordihn.easynpc.utils.ValueUtils;
 import net.minecraft.client.Minecraft;
@@ -33,11 +34,11 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class RangeSliderButton extends AbstractWidget {
 
-  private static final Component DECREASE_TEXT = TextComponent.getText("-");
-  private static final Component INCREASE_TEXT = TextComponent.getText("+");
-  private static final Component RESET_TEXT = TextComponent.getText("↺");
-  private static final Component EDIT_TEXT = TextComponent.getText("✎");
-  private static final Component DONE_TEXT = TextComponent.getText("✔");
+  public static final Component DECREASE_TEXT = TextComponent.getText("-");
+  public static final Component INCREASE_TEXT = TextComponent.getText("+");
+  public static final Component RESET_TEXT = TextComponent.getText("↺");
+  public static final Component EDIT_TEXT = TextComponent.getText("✎");
+  public static final Component DONE_TEXT = TextComponent.getText("✔");
   private static final int DEFAULT_WIDTH = 170;
   private static final int DEFAULT_HEIGHT = 14;
   private static final int DECREASE_BUTTON_WIDTH = 12;
@@ -51,6 +52,8 @@ public class RangeSliderButton extends AbstractWidget {
   private final TextButton textButtonEdit;
   private final TextButton textButtonDone;
   private final TextField textField;
+  private final SliderButton.Type sliderType;
+  private final boolean showButtons;
 
   public RangeSliderButton(
       int left,
@@ -104,6 +107,32 @@ public class RangeSliderButton extends AbstractWidget {
       int top,
       int width,
       int height,
+      double value,
+      double defaultValue,
+      SliderButton.Type sliderType,
+      boolean showButtons,
+      SliderButton.OnChange onChange) {
+    this(
+        left,
+        top,
+        width,
+        height,
+        sliderType.name(),
+        value,
+        SliderButton.getMinValue(sliderType),
+        SliderButton.getMaxValue(sliderType),
+        defaultValue,
+        SliderButton.getStepSize(sliderType),
+        sliderType,
+        showButtons,
+        onChange);
+  }
+
+  public RangeSliderButton(
+      int left,
+      int top,
+      int width,
+      int height,
       String label,
       double value,
       double minValue,
@@ -111,35 +140,80 @@ public class RangeSliderButton extends AbstractWidget {
       double defaultValue,
       double stepSize,
       SliderButton.OnChange onChange) {
+    this(
+        left,
+        top,
+        width,
+        height,
+        label,
+        value,
+        minValue,
+        maxValue,
+        defaultValue,
+        stepSize,
+        Type.DOUBLE,
+        true,
+        onChange);
+  }
+
+  public RangeSliderButton(
+      int left,
+      int top,
+      int width,
+      int height,
+      String label,
+      double value,
+      double minValue,
+      double maxValue,
+      double defaultValue,
+      double stepSize,
+      SliderButton.Type sliderType,
+      boolean showButtons,
+      SliderButton.OnChange onChange) {
     super(left, top, width, height, TextComponent.getBlankText());
     Font font = Minecraft.getInstance().font;
+    this.sliderType = sliderType;
+    this.showButtons = showButtons;
     this.sliderButton =
         new SliderButton(
-            left + DECREASE_BUTTON_WIDTH,
+            this.showButtons ? left + DECREASE_BUTTON_WIDTH : left,
             top,
-            width
-                - (DECREASE_BUTTON_WIDTH
-                    + INCREASE_BUTTON_WIDTH
-                    + RESET_BUTTON_WIDTH
-                    + EDIT_BUTTON_WIDTH),
+            this.getDefaultSliderWidth(),
             height,
-            label,
             value,
             minValue,
             maxValue,
-            button -> updateSliderValue(button, onChange));
+            button -> updateSliderValue(button, onChange),
+            this.sliderType);
     this.textField =
-        new PositiveNumberField(
-            font,
-            left + DECREASE_BUTTON_WIDTH,
-            top,
-            width
-                - (DECREASE_BUTTON_WIDTH
-                    + INCREASE_BUTTON_WIDTH
-                    + RESET_BUTTON_WIDTH
-                    + EDIT_BUTTON_WIDTH),
-            height,
-            value);
+        switch (this.sliderType) {
+          case DEGREE ->
+              new DegreeNumberField(
+                  font,
+                  this.showButtons ? left + DECREASE_BUTTON_WIDTH : left,
+                  top,
+                  this.getDefaultSliderWidth(),
+                  height,
+                  value);
+          case POSITION ->
+              new PositionNumberField(
+                  font,
+                  this.showButtons ? left + DECREASE_BUTTON_WIDTH : left,
+                  top,
+                  this.getDefaultSliderWidth(),
+                  height,
+                  value,
+                  minValue,
+                  maxValue);
+          default ->
+              new PositiveNumberField(
+                  font,
+                  this.showButtons ? left + DECREASE_BUTTON_WIDTH : left,
+                  top,
+                  this.getDefaultSliderWidth(),
+                  height,
+                  value);
+        };
     this.textField.setResponder(
         text -> {
           if (ValueUtils.isDoubleValue(text, minValue, maxValue)) {
@@ -160,6 +234,7 @@ public class RangeSliderButton extends AbstractWidget {
                 this.updateTextField();
               }
             });
+    this.textButtonDecrease.active = showButtons;
     this.textButtonIncrease =
         new TextButton(
             this.sliderButton.x + this.sliderButton.getWidth(),
@@ -174,6 +249,7 @@ public class RangeSliderButton extends AbstractWidget {
                 this.updateTextField();
               }
             });
+    this.textButtonIncrease.active = showButtons;
     this.textButtonReset =
         new TextButton(
             this.textButtonIncrease.x + this.textButtonIncrease.getWidth(),
@@ -185,6 +261,7 @@ public class RangeSliderButton extends AbstractWidget {
               this.sliderButton.setDefaultValue(defaultValue);
               this.updateTextField();
             });
+    this.textButtonReset.active = showButtons;
     this.textButtonEdit =
         new TextButton(
             this.textButtonReset.x + this.textButtonReset.getWidth(),
@@ -193,6 +270,7 @@ public class RangeSliderButton extends AbstractWidget {
             height,
             EDIT_TEXT,
             this::showTextField);
+    this.textButtonEdit.active = showButtons;
     this.textButtonDone =
         new TextButton(
             this.textButtonReset.x + this.textButtonReset.getWidth(),
@@ -201,6 +279,7 @@ public class RangeSliderButton extends AbstractWidget {
             height,
             DONE_TEXT,
             this::showSliderButton);
+    this.textButtonDone.active = showButtons;
   }
 
   private void updateSliderValue(SliderButton sliderButton, SliderButton.OnChange onChange) {
@@ -209,10 +288,23 @@ public class RangeSliderButton extends AbstractWidget {
 
   private void updateTextField() {
     String sliderValue =
-        String.format("%.2f", this.sliderButton.getTargetDoubleValue()).replace(",", ".");
+        switch (this.sliderType) {
+          case DEGREE ->
+              String.format("%.1f", this.sliderButton.getTargetDoubleValue()).replace(",", ".");
+          default ->
+              String.format("%.2f", this.sliderButton.getTargetDoubleValue()).replace(",", ".");
+        };
     if (!this.textField.getValue().equals(sliderValue)) {
       this.textField.setValue(sliderValue);
     }
+  }
+
+  public void showTextField() {
+    this.showTextField(null);
+  }
+
+  public void showSliderButton() {
+    this.showSliderButton(null);
   }
 
   private void showTextField(Button button) {
@@ -234,6 +326,22 @@ public class RangeSliderButton extends AbstractWidget {
     return this.sliderButton.getTargetValue();
   }
 
+  public void reset() {
+    this.sliderButton.reset();
+    this.updateTextField();
+  }
+
+  public int getDefaultSliderWidth() {
+    if (this.showButtons) {
+      return this.width
+          - (DECREASE_BUTTON_WIDTH
+              + INCREASE_BUTTON_WIDTH
+              + RESET_BUTTON_WIDTH
+              + EDIT_BUTTON_WIDTH);
+    }
+    return this.width;
+  }
+
   @Override
   public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
     if (sliderButton.isVisible()) {
@@ -242,13 +350,19 @@ public class RangeSliderButton extends AbstractWidget {
       textField.render(poseStack, mouseX, mouseY, delta);
     }
 
-    textButtonDecrease.render(poseStack, mouseX, mouseY, delta);
-    textButtonIncrease.render(poseStack, mouseX, mouseY, delta);
-    textButtonReset.render(poseStack, mouseX, mouseY, delta);
+    if (textButtonDecrease.isActive()) {
+      textButtonDecrease.render(poseStack, mouseX, mouseY, delta);
+    }
+    if (textButtonIncrease.isActive()) {
+      textButtonIncrease.render(poseStack, mouseX, mouseY, delta);
+    }
+    if (textButtonReset.isActive()) {
+      textButtonReset.render(poseStack, mouseX, mouseY, delta);
+    }
 
-    if (textButtonEdit.isVisible()) {
+    if (textButtonEdit.isActive() && textButtonEdit.isVisible()) {
       textButtonEdit.render(poseStack, mouseX, mouseY, delta);
-    } else if (textButtonDone.isVisible()) {
+    } else if (textButtonDone.isActive() && textButtonDone.isVisible()) {
       textButtonDone.render(poseStack, mouseX, mouseY, delta);
     }
   }
@@ -281,6 +395,13 @@ public class RangeSliderButton extends AbstractWidget {
       textField.mouseScrolled(x, y, distance);
     }
     return super.mouseScrolled(x, y, distance);
+  }
+
+  @Override
+  public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+    if (sliderButton.isVisible() && sliderButton.isMouseOver(mouseX, mouseY)) {
+      sliderButton.triggerOnDrag(mouseX, mouseY, deltaX, deltaY);
+    }
   }
 
   @Override

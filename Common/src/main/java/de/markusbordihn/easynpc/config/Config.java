@@ -38,7 +38,32 @@ public class Config {
   private static Path configPath =
       Paths.get("").toAbsolutePath().resolve("config").resolve(Constants.MOD_ID);
 
-  public static void register() {
+  protected Config() {}
+
+  public static void register(boolean isServer) {
+    prepareConfiguration();
+    registerCommonConfig();
+    if (isServer) {
+      registerServerConfig();
+    } else {
+      registerClientConfig();
+    }
+  }
+
+  public static void registerCommonConfig() {
+    log.info("{} Registering common configuration ...", LOG_PREFIX);
+    RenderEntityTypeSupportConfig.registerConfig();
+  }
+
+  public static void registerClientConfig() {
+    log.info("{} Registering client configuration ...", LOG_PREFIX);
+  }
+
+  public static void registerServerConfig() {
+    log.info("{} Registering server configuration ...", LOG_PREFIX);
+  }
+
+  public static void prepareConfiguration() {
     // Validate game folder path.
     if (Constants.CONFIG_DIR != null) {
       configPath = Constants.CONFIG_DIR.resolve(Constants.MOD_ID);
@@ -57,9 +82,6 @@ public class Config {
       return;
     }
     isLoaded = true;
-
-    // Register configuration files
-    RenderEntityTypeSupportConfig.registerConfig();
   }
 
   public static void registerConfigFile(

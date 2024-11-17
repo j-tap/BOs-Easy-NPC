@@ -21,7 +21,7 @@ package de.markusbordihn.easynpc.client.screen.configuration.pose;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.markusbordihn.easynpc.client.screen.components.Checkbox;
-import de.markusbordihn.easynpc.client.screen.components.SliderButton;
+import de.markusbordihn.easynpc.client.screen.components.RangeSliderButton;
 import de.markusbordihn.easynpc.client.screen.components.Text;
 import de.markusbordihn.easynpc.data.model.ModelPart;
 import de.markusbordihn.easynpc.entity.easynpc.data.VariantData;
@@ -34,25 +34,25 @@ import net.minecraft.world.entity.player.Inventory;
 public class CustomPoseConfigurationScreen<T extends ConfigurationMenu>
     extends PoseConfigurationScreen<T> {
 
-  protected SliderButton headSliderButton;
-  protected SliderButton bodySliderButton;
-  protected SliderButton armsSliderButton;
-  protected SliderButton leftArmSliderButton;
-  protected SliderButton rightArmSliderButton;
-  protected SliderButton leftLegSliderButton;
-  protected SliderButton rightLegSliderButton;
+  protected RangeSliderButton headSliderButton;
+  protected RangeSliderButton bodySliderButton;
+  protected RangeSliderButton armsSliderButton;
+  protected RangeSliderButton leftArmSliderButton;
+  protected RangeSliderButton rightArmSliderButton;
+  protected RangeSliderButton leftLegSliderButton;
+  protected RangeSliderButton rightLegSliderButton;
 
   public CustomPoseConfigurationScreen(T menu, Inventory inventory, Component component) {
     super(menu, inventory, component);
   }
 
-  private SliderButton createVisibilityRotationPositionSlider(
+  private RangeSliderButton createVisibilityRotationPositionSlider(
       int left, int top, ModelPart modelPart, String label) {
     // Model Part Rotation
-    SliderButton sliderRotationButtonX = createRotationSliderCompact(left, top, modelPart, label);
+    RangeSliderButton sliderRotationButtonX = createRotationSlider(left, top, modelPart, label);
 
     // Model Part Position
-    SliderButton sliderPositionButtonX =
+    RangeSliderButton sliderPositionButtonX =
         createPositionSliderCompact(
             left, top + sliderRotationButtonX.getHeight(), modelPart, label);
 
@@ -79,10 +79,10 @@ public class CustomPoseConfigurationScreen<T extends ConfigurationMenu>
     this.customPoseButton.active = false;
 
     // Position and size
-    int sliderTopPos = this.contentTopPos + 16;
+    int sliderTopPos = this.contentTopPos + 56;
     int sliderLeftPos = this.contentLeftPos - 3;
     int sliderLeftSpace = 200;
-    int sliderTopSpace = 66;
+    int sliderTopSpace = 60;
 
     // Variant data
     VariantData<?> variantData = this.getEasyNPC().getEasyNPCVariantData();
@@ -157,7 +157,7 @@ public class CustomPoseConfigurationScreen<T extends ConfigurationMenu>
 
     // Avatar
     ScreenHelper.renderCustomPoseEntityAvatar(
-        this.contentLeftPos + 152,
+        this.contentLeftPos + 157,
         this.contentTopPos + 165,
         45,
         this.contentLeftPos + 150 - this.xMouse,
@@ -227,19 +227,20 @@ public class CustomPoseConfigurationScreen<T extends ConfigurationMenu>
     super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
     // Entity background
+    int backgroundTopPos = this.contentTopPos + 30;
     fill(
         poseStack,
-        this.contentLeftPos + 99,
-        this.contentTopPos,
+        this.contentLeftPos + 109,
+        backgroundTopPos,
         this.contentLeftPos + 206,
-        this.contentTopPos + 208,
+        backgroundTopPos + 178,
         0xff000000);
     fill(
         poseStack,
-        this.contentLeftPos + 100,
-        this.contentTopPos + 1,
+        this.contentLeftPos + 110,
+        backgroundTopPos + 1,
         this.contentLeftPos + 205,
-        this.contentTopPos + 207,
+        backgroundTopPos + 177,
         0xffaaaaaa);
   }
 }
