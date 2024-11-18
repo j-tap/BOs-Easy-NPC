@@ -8,6 +8,10 @@ For the full changelog, please go to the [GitHub History][history] instead.
 Note: Please always back up your world / NPCs before updating to a new version!
 Check the [upgrade guide][upgrade_guide] for more information.
 
+### 5.7.6
+
+- Fixed IDE auto-formatting error which added wrong import statements.
+
 ### 5.7.5
 
 - Fixed #375 by lowering layer height and resetting scale and rotation for NPCs for dialogs.
