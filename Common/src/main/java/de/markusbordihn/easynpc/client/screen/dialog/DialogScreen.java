@@ -65,7 +65,7 @@ public class DialogScreen<T extends DialogMenu> extends Screen<T> {
   private List<FormattedCharSequence> cachedDialogComponents = Collections.emptyList();
 
   public DialogScreen(T menu, Inventory inventory, Component component) {
-    super(menu, inventory, component);
+    super(menu, inventory, component, 280, 200);
     this.dialogText = this.getDialogText();
     this.dialogMetaData =
         new DialogMetaData(
@@ -404,15 +404,9 @@ public class DialogScreen<T extends DialogMenu> extends Screen<T> {
   public void init() {
     super.init();
 
-    // Default stats
-    this.imageHeight = 200;
-    this.imageWidth = 280;
-
     // Basic Position
     this.titleLabelX = 10;
     this.titleLabelY = 8;
-    this.topPos = (this.height - this.imageHeight) / 2;
-    this.leftPos = (this.width - this.imageWidth) / 2;
 
     // Close Button
     this.closeButton.setX(this.leftPos + this.imageWidth - 13);
@@ -467,12 +461,15 @@ public class DialogScreen<T extends DialogMenu> extends Screen<T> {
     int avatarPositionTop = 60 + this.getEasyNPC().getEasyNPCDialogData().getEntityDialogTop();
     int left = this.leftPos + 40;
     int top = this.topPos + 70 + avatarPositionTop;
+    guiGraphics.pose().pushPose();
+    guiGraphics.pose().translate(0, 0, 1000);
     ScreenHelper.renderEntityDialog(
         left,
         top,
         Math.round(left - 140 - (this.xMouse * 0.25)),
         Math.round(top - 120 - (this.yMouse * 0.5)),
         this.getEasyNPC());
+    guiGraphics.pose().popPose();
 
     // Render Dialog
     renderDialog(guiGraphics);

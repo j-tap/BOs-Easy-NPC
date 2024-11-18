@@ -121,6 +121,29 @@ public class SliderButton extends AbstractSliderButton {
       int y,
       int width,
       int height,
+      double initValue,
+      double minValue,
+      double maxValue,
+      SliderButton.OnChange onChange,
+      Type type) {
+    this(
+        x,
+        y,
+        width,
+        height,
+        EMPTY_TEXT,
+        (float) initValue,
+        (float) minValue,
+        (float) maxValue,
+        onChange,
+        type);
+  }
+
+  public SliderButton(
+      int x,
+      int y,
+      int width,
+      int height,
       Component name,
       float initValue,
       float minValue,
@@ -220,6 +243,10 @@ public class SliderButton extends AbstractSliderButton {
 
   public boolean isVisible() {
     return this.visible;
+  }
+
+  public void triggerOnDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+    this.onDrag(mouseX, mouseY, deltaX, deltaY);
   }
 
   @Override

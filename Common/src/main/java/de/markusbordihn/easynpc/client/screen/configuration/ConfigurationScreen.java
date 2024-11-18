@@ -45,7 +45,7 @@ public class ConfigurationScreen<T extends EasyNPCMenu> extends Screen<T> {
   protected List<FormattedCharSequence> descriptionTextComponents = Collections.emptyList();
 
   public ConfigurationScreen(T menu, Inventory inventory, Component component) {
-    super(menu, inventory, component);
+    super(menu, inventory, component, 328, 243);
     this.showCloseButton = false;
   }
 

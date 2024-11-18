@@ -56,7 +56,7 @@ import net.minecraft.world.item.DyeColor;
 public class MainConfigurationScreen<T extends ConfigurationMenu> extends ConfigurationScreen<T> {
 
   public static final int BUTTON_HEIGHT = 18;
-  public static final int BUTTON_WIDTH = 92;
+  public static final int BUTTON_WIDTH = 97;
   private static final Map<String, ConfigurationType> menuButtons = new LinkedHashMap<>();
 
   static {
@@ -244,7 +244,7 @@ public class MainConfigurationScreen<T extends ConfigurationMenu> extends Config
             new TextButton(
                 this.leftPos + 122,
                 this.contentTopPos + 35,
-                92,
+                97,
                 "import",
                 onPress ->
                     NetworkMessageHandlerManager.getServerHandler()
@@ -258,7 +258,7 @@ public class MainConfigurationScreen<T extends ConfigurationMenu> extends Config
             new TextButton(
                 importButton.getX() + importButton.getWidth() + 5,
                 importButton.getY(),
-                92,
+                97,
                 "export",
                 onPress ->
                     NetworkMessageHandlerManager.getServerHandler()
@@ -274,7 +274,7 @@ public class MainConfigurationScreen<T extends ConfigurationMenu> extends Config
         nameComponent.getContents() instanceof TranslatableContents translatableContents
             ? translatableContents.getKey()
             : nameComponent.getString();
-    this.nameBox = new TextField(this.font, this.contentLeftPos + 115, this.contentTopPos + 2, 128);
+    this.nameBox = new TextField(this.font, this.contentLeftPos + 115, this.contentTopPos + 2, 138);
     this.nameBox.setMaxLength(32);
     this.nameBox.setValue(this.formerName);
     this.nameBox.setResponder(consumer -> this.validateName());

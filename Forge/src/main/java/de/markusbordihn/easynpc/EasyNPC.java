@@ -22,17 +22,12 @@ package de.markusbordihn.easynpc;
 import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.api.IEnvironment;
 import de.markusbordihn.easynpc.block.ModBlocks;
-import de.markusbordihn.easynpc.client.model.ModModelLayer;
-import de.markusbordihn.easynpc.client.renderer.ClientRenderer;
-import de.markusbordihn.easynpc.client.renderer.manager.EntityTypeManager;
-import de.markusbordihn.easynpc.client.screen.ClientScreens;
 import de.markusbordihn.easynpc.commands.ModArgumentTypes;
 import de.markusbordihn.easynpc.compat.CompatHandler;
 import de.markusbordihn.easynpc.compat.CompatManager;
 import de.markusbordihn.easynpc.config.Config;
 import de.markusbordihn.easynpc.debug.DebugManager;
 import de.markusbordihn.easynpc.entity.ModEntityType;
-import de.markusbordihn.easynpc.io.DataFileHandler;
 import de.markusbordihn.easynpc.item.ModItems;
 import de.markusbordihn.easynpc.menu.MenuHandler;
 import de.markusbordihn.easynpc.menu.MenuManager;
@@ -42,17 +37,15 @@ import de.markusbordihn.easynpc.network.NetworkHandler;
 import de.markusbordihn.easynpc.network.NetworkHandlerManager;
 import de.markusbordihn.easynpc.network.NetworkHandlerManagerType;
 import de.markusbordihn.easynpc.network.NetworkMessageHandlerManager;
-import de.markusbordihn.easynpc.network.ServerNetworkMessageHandler;
 import de.markusbordihn.easynpc.network.syncher.EntityDataSerializersManager;
-import de.markusbordihn.easynpc.tabs.ModTabs;
 import java.util.Optional;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -80,7 +73,7 @@ public class EasyNPC {
     Constants.CONFIG_DIR = FMLPaths.CONFIGDIR.get();
 
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
-    Config.register();
+    Config.register(FMLEnvironment.dist == Dist.DEDICATED_SERVER);
 
     log.info("{} Entity Data Serializers ...", Constants.LOG_REGISTER_PREFIX);
     EntityDataSerializersManager.register();
@@ -120,24 +113,7 @@ public class EasyNPC {
                 }));
     NetworkMessageHandlerManager.registerClientHandler(new ClientNetworkMessageHandler());
 
-    DistExecutor.unsafeRunWhenOn(
-        Dist.CLIENT,
-        () ->
-            () -> {
-              log.info("{} Client events ...", Constants.LOG_REGISTER_PREFIX);
-              modEventBus.addListener(ModModelLayer::registerEntityLayerDefinitions);
-              modEventBus.addListener(ClientRenderer::registerEntityRenderers);
-              modEventBus.addListener(ClientScreens::registerScreens);
-              modEventBus.addListener(
-                  (final FMLClientSetupEvent event) -> {
-                    log.info("{} Register Data Files ...", Constants.LOG_REGISTER_PREFIX);
-                    event.enqueueWork(DataFileHandler::registerDataFiles);
-
-                    log.info("{} Register Entity Type Manager ...", Constants.LOG_REGISTER_PREFIX);
-                    event.enqueueWork(EntityTypeManager::register);
-                  });
-              NetworkMessageHandlerManager.registerServerHandler(new ServerNetworkMessageHandler());
-              ModTabs.CREATIVE_TABS.register(modEventBus);
-            });
+    // Initialize the client mod initializer
+    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new EasyNPCClient(modEventBus));
   }
 }

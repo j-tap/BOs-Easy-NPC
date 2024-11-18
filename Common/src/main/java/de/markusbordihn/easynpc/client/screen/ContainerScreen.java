@@ -53,7 +53,16 @@ public class ContainerScreen<T extends EasyNPCMenu> extends AbstractContainerScr
   protected boolean compactMode = false;
 
   protected ContainerScreen(T menu, Inventory inventory, Component component) {
+    this(menu, inventory, component, 318, 243);
+  }
+
+  protected ContainerScreen(
+      T menu, Inventory inventory, Component component, int width, int height) {
     super(menu, inventory, component);
+
+    // Set screen size
+    this.imageWidth = width;
+    this.imageHeight = height;
 
     // Get menu and screen data
     this.menu = menu;
@@ -98,8 +107,6 @@ public class ContainerScreen<T extends EasyNPCMenu> extends AbstractContainerScr
     super.init();
 
     // Default stats
-    this.imageHeight = 243;
-    this.imageWidth = 318;
     this.compactMode = this.height < 260;
 
     // Basic position

@@ -40,6 +40,8 @@ import de.markusbordihn.easynpc.entity.easynpc.npc.Villager;
 import de.markusbordihn.easynpc.entity.easynpc.npc.Wolf;
 import de.markusbordihn.easynpc.entity.easynpc.npc.Zombie;
 import de.markusbordihn.easynpc.entity.easynpc.npc.ZombieVillager;
+import de.markusbordihn.easynpc.entity.easynpc.raw.PiglinRaw;
+import de.markusbordihn.easynpc.entity.easynpc.raw.SkeletonRaw;
 import de.markusbordihn.easynpc.entity.easynpc.raw.ZombieRaw;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
@@ -178,6 +180,16 @@ public class ModEntityType {
           Constants.MOD_ID + ":" + ZombieVillager.ID,
           ModEntityTypes.ZOMBIE_VILLAGER);
   // Raw entities (for modding only)
+  public static final EntityType<PiglinRaw> PIGLIN_RAW =
+      Registry.register(
+          BuiltInRegistries.ENTITY_TYPE,
+          Constants.MOD_ID + ":" + PiglinRaw.ID,
+          ModEntityTypes.PIGLIN_RAW);
+  public static final EntityType<SkeletonRaw> SKELETON_RAW =
+      Registry.register(
+          BuiltInRegistries.ENTITY_TYPE,
+          Constants.MOD_ID + ":" + SkeletonRaw.ID,
+          ModEntityTypes.SKELETON_RAW);
   public static final EntityType<ZombieRaw> ZOMBIE_RAW =
       Registry.register(
           BuiltInRegistries.ENTITY_TYPE,
@@ -230,6 +242,10 @@ public class ModEntityType {
     FabricDefaultAttributeRegistry.register(ZOMBIE_VILLAGER, ZombieVillager.createAttributes());
 
     // Raw entities (for modding only)
+    FabricDefaultAttributeRegistry.register(
+        PIGLIN_RAW, net.minecraft.world.entity.monster.piglin.Piglin.createAttributes());
+    FabricDefaultAttributeRegistry.register(
+        SKELETON_RAW, net.minecraft.world.entity.monster.Skeleton.createAttributes());
     FabricDefaultAttributeRegistry.register(
         ZOMBIE_RAW, net.minecraft.world.entity.monster.Zombie.createAttributes());
 
