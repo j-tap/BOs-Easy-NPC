@@ -31,7 +31,6 @@ import de.markusbordihn.easynpc.entity.easynpc.EasyNPCBase;
 import de.markusbordihn.easynpc.entity.easynpc.handlers.AttackHandler;
 import de.markusbordihn.easynpc.entity.easynpc.handlers.InteractionHandler;
 import de.markusbordihn.easynpc.entity.easynpc.handlers.VisibilityHandler;
-import de.markusbordihn.easynpc.entity.easynpc.npc.ZombieVillager.Variant;
 import de.markusbordihn.easynpc.server.player.FakePlayer;
 import de.markusbordihn.easynpc.utils.TextUtils;
 import java.util.EnumMap;
