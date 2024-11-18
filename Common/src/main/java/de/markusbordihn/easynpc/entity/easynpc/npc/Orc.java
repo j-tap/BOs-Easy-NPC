@@ -74,7 +74,11 @@ public class Orc extends EasyNPCBaseModelEntity<Orc> {
 
   @Override
   public Enum<?> getVariant(String name) {
-    return Variant.valueOf(name);
+    try {
+      return Variant.valueOf(name);
+    } catch (IllegalArgumentException e) {
+      return getDefaultVariant();
+    }
   }
 
   @Override

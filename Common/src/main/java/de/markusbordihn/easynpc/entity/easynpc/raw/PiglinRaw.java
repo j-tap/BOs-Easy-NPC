@@ -56,7 +56,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
@@ -70,16 +70,16 @@ import net.minecraft.world.phys.Vec3;
 /*
  * WARNING: This is an automatically generated file, please do not modify it directly!
  */
-public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
+public class PiglinRaw extends Piglin implements EasyNPCBase<Piglin> {
 
-  public static final String ID = "zombie_raw";
+  public static final String ID = "piglin_raw";
 
   protected static final EnumMap<SynchedDataIndex, EntityDataAccessor<?>> entityDataAccessorMap =
       new EnumMap<>(SynchedDataIndex.class);
   private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
   static {
-    EasyNPCBase.registerEasyNPCSyncedData(entityDataAccessorMap, ZombieRaw.class);
+    EasyNPCBase.registerEasyNPCSyncedData(entityDataAccessorMap, PiglinRaw.class);
   }
 
   private final EnumMap<TickerType, Integer> tickerMap = new EnumMap<>(TickerType.class);
@@ -93,7 +93,7 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
   private Player tradingPlayer;
   private FakePlayer fakePlayer;
 
-  public ZombieRaw(EntityType<? extends Zombie> entityType, Level level) {
+  public PiglinRaw(EntityType<? extends Piglin> entityType, Level level) {
     super(entityType, level);
   }
 
@@ -468,7 +468,7 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
 
   @Override
   public SkinModel getSkinModel() {
-    return SkinModel.ZOMBIE;
+    return SkinModel.PIGLIN;
   }
 
   @Override
@@ -478,7 +478,7 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
 
   @Override
   public Enum<?> getDefaultVariant() {
-    return Variant.ZOMBIE;
+    return Variant.PIGLIN;
   }
 
   @Override
@@ -529,8 +529,8 @@ public class ZombieRaw extends Zombie implements EasyNPCBase<Zombie> {
   }
 
   public enum Variant {
-    DROWNED,
-    HUSK,
-    ZOMBIE
+    PIGLIN,
+    PIGLIN_BRUTE,
+    ZOMBIFIED_PIGLIN
   }
 }

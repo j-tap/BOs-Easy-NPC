@@ -279,6 +279,22 @@ public class ScreenHelper {
 
   public static void renderEntityDialog(
       GuiGraphics guiGraphics, int x, int y, float yRot, float xRot, EasyNPC<?> easyNPC) {
+    ModelData<?> modelData = easyNPC.getEasyNPCModelData();
+
+    // Backup entity information
+    CustomRotation entityModelRootRotation = modelData.getModelRootRotation();
+    ScaleData<?> scaleData = easyNPC.getEasyNPCScaleData();
+    Float scaleX = scaleData.getScaleX();
+    Float scaleY = scaleData.getScaleY();
+    Float scaleZ = scaleData.getScaleZ();
+
+    // Adjust entity information for rendering
+    modelData.setModelRootRotation(new CustomRotation(0.0F, 0.0F, 0.0F));
+    scaleData.setScaleX(1F);
+    scaleData.setScaleY(1F);
+    scaleData.setScaleZ(1F);
+
+    // Render Entity
     DialogData<?> dialogData = easyNPC.getEasyNPCDialogData();
     renderEntity(
         guiGraphics,
@@ -288,6 +304,12 @@ public class ScreenHelper {
         yRot,
         xRot,
         easyNPC.getLivingEntity());
+
+    // Restore entity information
+    modelData.setModelRootRotation(entityModelRootRotation);
+    scaleData.setScaleX(scaleX);
+    scaleData.setScaleY(scaleY);
+    scaleData.setScaleZ(scaleZ);
   }
 
   public static void renderEntityCustomModel(

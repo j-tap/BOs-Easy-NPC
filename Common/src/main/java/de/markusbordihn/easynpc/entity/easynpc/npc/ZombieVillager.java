@@ -80,18 +80,17 @@ public class ZombieVillager extends EasyNPCBaseModelEntity<ZombieVillager> {
   }
 
   @Override
-  public Enum<?>[] getVariants() {
-    return Variant.values();
-  }
-
-  @Override
   public Enum<?> getDefaultVariant() {
     return Variant.DEFAULT;
   }
 
   @Override
   public Enum<?> getVariant(String name) {
-    return Variant.valueOf(name);
+    try {
+      return Variant.valueOf(name);
+    } catch (IllegalArgumentException e) {
+      return getDefaultVariant();
+    }
   }
 
   @Override

@@ -64,16 +64,16 @@ public class RotationConfigurationScreen<T extends ConfigurationMenu>
 
   @Override
   public void renderDefaultScreenBg(GuiGraphics guiGraphics, int leftPos, int topPos) {
-    Graphics.blit(guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 210, 40);
+    Graphics.blit(guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 220, 40);
     Graphics.blit(
-        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 203, topPos, 132, 0, 120, 40);
+        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 213, topPos, 132, 0, 120, 27);
     Graphics.blit(
-        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 40, 0, 130, 210, 40);
+        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 27, 0, 130, 220, 40);
     Graphics.blit(
         guiGraphics,
         Constants.TEXTURE_DEMO_BACKGROUND,
-        leftPos + 203,
-        topPos + 40,
+        leftPos + 213,
+        topPos + 27,
         132,
         130,
         120,

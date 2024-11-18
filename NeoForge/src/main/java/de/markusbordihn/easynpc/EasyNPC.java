@@ -39,9 +39,11 @@ import de.markusbordihn.easynpc.network.NetworkHandlerManagerType;
 import de.markusbordihn.easynpc.network.NetworkMessageHandlerManager;
 import de.markusbordihn.easynpc.network.syncher.ModEntityDataSerializers;
 import java.util.Optional;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
@@ -68,7 +70,7 @@ public class EasyNPC {
     Constants.CONFIG_DIR = FMLPaths.CONFIGDIR.get();
 
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
-    Config.register();
+    Config.register(FMLEnvironment.dist == Dist.DEDICATED_SERVER);
 
     log.info("{} Compatibility Handler ...", Constants.LOG_REGISTER_PREFIX);
     CompatManager.registerCompatHandler(new CompatHandler());

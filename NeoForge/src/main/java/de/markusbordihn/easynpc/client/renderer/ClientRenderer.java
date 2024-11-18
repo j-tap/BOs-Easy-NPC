@@ -24,6 +24,8 @@ import de.markusbordihn.easynpc.client.model.ModModelLayers;
 import de.markusbordihn.easynpc.client.renderer.entity.custom.FairyModelRenderer;
 import de.markusbordihn.easynpc.client.renderer.entity.custom.OrcModelRenderer;
 import de.markusbordihn.easynpc.client.renderer.entity.layers.CustomHumanoidArmorLayer;
+import de.markusbordihn.easynpc.client.renderer.entity.raw.PiglinRawRenderer;
+import de.markusbordihn.easynpc.client.renderer.entity.raw.SkeletonRawRenderer;
 import de.markusbordihn.easynpc.client.renderer.entity.standard.AllayModelRenderer;
 import de.markusbordihn.easynpc.client.renderer.entity.standard.CatModelRenderer;
 import de.markusbordihn.easynpc.client.renderer.entity.standard.ChickenModelRenderer;
@@ -41,6 +43,7 @@ import de.markusbordihn.easynpc.client.renderer.entity.standard.ZombieModelRende
 import de.markusbordihn.easynpc.client.renderer.entity.standard.ZombieVillagerModelRenderer;
 import de.markusbordihn.easynpc.compat.CompatConstants;
 import de.markusbordihn.easynpc.entity.ModEntityType;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -123,6 +126,16 @@ public class ClientRenderer {
     event.registerEntityRenderer(ModEntityType.ZOMBIE_HORSE.get(), HorseModelRenderer::new);
 
     // Raw entities (for modding only)
+    event.registerEntityRenderer(
+        ModEntityType.PIGLIN_RAW.get(),
+        context ->
+            new PiglinRawRenderer(
+                context,
+                ModelLayers.PIGLIN,
+                ModelLayers.PIGLIN_INNER_ARMOR,
+                ModelLayers.PIGLIN_OUTER_ARMOR,
+                false));
+    event.registerEntityRenderer(ModEntityType.SKELETON_RAW.get(), SkeletonRawRenderer::new);
     event.registerEntityRenderer(ModEntityType.ZOMBIE_RAW.get(), ZombieRenderer::new);
 
     // Optional: Epic Fight entities

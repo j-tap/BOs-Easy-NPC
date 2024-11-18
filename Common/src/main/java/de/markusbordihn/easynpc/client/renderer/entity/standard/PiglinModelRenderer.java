@@ -24,18 +24,18 @@ public class PiglinModelRenderer
           new EnumMap<>(Piglin.Variant.class),
           map -> {
             map.put(
-                Piglin.Variant.DEFAULT,
+                Piglin.Variant.PIGLIN,
                 ResourceLocation.withDefaultNamespace("textures/entity/piglin/piglin.png"));
             map.put(
-                Piglin.Variant.BRUTE,
+                Piglin.Variant.PIGLIN_BRUTE,
                 ResourceLocation.withDefaultNamespace("textures/entity/piglin/piglin_brute.png"));
             map.put(
-                Piglin.Variant.ZOMBIFIED,
+                Piglin.Variant.ZOMBIFIED_PIGLIN,
                 ResourceLocation.withDefaultNamespace(
                     "textures/entity/piglin/zombified_piglin.png"));
           });
   protected static final ResourceLocation DEFAULT_TEXTURE =
-      TEXTURE_BY_VARIANT.get(Piglin.Variant.DEFAULT);
+      TEXTURE_BY_VARIANT.get(Piglin.Variant.PIGLIN);
 
   public <T extends RenderLayer<Piglin, StandardPiglinModel<Piglin>>> PiglinModelRenderer(
       EntityRendererProvider.Context context, Class<T> humanoidArmorLayerClass) {

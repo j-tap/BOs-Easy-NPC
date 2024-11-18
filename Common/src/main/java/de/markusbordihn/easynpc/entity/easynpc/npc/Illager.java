@@ -19,8 +19,6 @@
 
 package de.markusbordihn.easynpc.entity.easynpc.npc;
 
-import static de.markusbordihn.easynpc.entity.easynpc.npc.Illager.Variant.EVOKER_CROSSED_ARMS;
-
 import de.markusbordihn.easynpc.data.skin.SkinModel;
 import de.markusbordihn.easynpc.data.sound.SoundDataSet;
 import de.markusbordihn.easynpc.data.sound.SoundType;
@@ -84,7 +82,11 @@ public class Illager extends EasyNPCBaseModelEntity<Illager> {
 
   @Override
   public Enum<?> getVariant(String name) {
-    return Variant.valueOf(name);
+    try {
+      return Variant.valueOf(name);
+    } catch (IllegalArgumentException e) {
+      return getDefaultVariant();
+    }
   }
 
   @Override

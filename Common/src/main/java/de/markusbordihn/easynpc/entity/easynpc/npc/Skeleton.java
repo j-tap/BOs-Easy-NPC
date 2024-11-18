@@ -79,7 +79,11 @@ public class Skeleton extends EasyNPCBaseModelEntity<Skeleton> {
 
   @Override
   public Enum<?> getVariant(String name) {
-    return Variant.valueOf(name);
+    try {
+      return Variant.valueOf(name);
+    } catch (IllegalArgumentException e) {
+      return getDefaultVariant();
+    }
   }
 
   @Override

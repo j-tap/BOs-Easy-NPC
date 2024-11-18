@@ -38,7 +38,7 @@ public class Piglin extends EasyNPCBaseModelEntity<Piglin> {
   public static final String ID_ZOMBIFIED = "piglin_zombified";
 
   public Piglin(EntityType<? extends PathfinderMob> entityType, Level level) {
-    this(entityType, level, Variant.DEFAULT);
+    this(entityType, level, Variant.PIGLIN);
   }
 
   public Piglin(EntityType<? extends PathfinderMob> entityType, Level level, Enum<?> variant) {
@@ -70,25 +70,29 @@ public class Piglin extends EasyNPCBaseModelEntity<Piglin> {
 
   @Override
   public Enum<?> getDefaultVariant() {
-    return Variant.DEFAULT;
+    return Variant.PIGLIN;
   }
 
   @Override
   public Enum<?> getVariant(String name) {
-    return Variant.valueOf(name);
+    try {
+      return Variant.valueOf(name);
+    } catch (IllegalArgumentException e) {
+      return getDefaultVariant();
+    }
   }
 
   @Override
   public SoundDataSet getDefaultSoundDataSet(SoundDataSet soundDataSet, String variantName) {
     Variant soundVariant = Variant.valueOf(variantName);
     switch (soundVariant) {
-      case BRUTE:
+      case PIGLIN_BRUTE:
         soundDataSet.addSound(SoundType.AMBIENT, SoundEvents.PIGLIN_BRUTE_AMBIENT);
         soundDataSet.addSound(SoundType.HURT, SoundEvents.PIGLIN_BRUTE_HURT);
         soundDataSet.addSound(SoundType.DEATH, SoundEvents.PIGLIN_BRUTE_DEATH);
         soundDataSet.addSound(SoundType.STEP, SoundEvents.PIGLIN_BRUTE_STEP);
         break;
-      case ZOMBIFIED:
+      case ZOMBIFIED_PIGLIN:
         soundDataSet.addSound(SoundType.AMBIENT, SoundEvents.ZOMBIFIED_PIGLIN_AMBIENT);
         soundDataSet.addSound(SoundType.HURT, SoundEvents.ZOMBIFIED_PIGLIN_HURT);
         soundDataSet.addSound(SoundType.DEATH, SoundEvents.ZOMBIFIED_PIGLIN_DEATH);
@@ -107,8 +111,8 @@ public class Piglin extends EasyNPCBaseModelEntity<Piglin> {
   }
 
   public enum Variant {
-    DEFAULT,
-    BRUTE,
-    ZOMBIFIED
+    PIGLIN,
+    PIGLIN_BRUTE,
+    ZOMBIFIED_PIGLIN
   }
 }

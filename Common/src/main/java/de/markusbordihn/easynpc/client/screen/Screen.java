@@ -47,6 +47,8 @@ public class Screen<T extends EasyNPCMenu> extends net.minecraft.client.gui.scre
   protected static double formerMouseY = -1;
   protected final Minecraft minecraftInstance;
   protected final T menu;
+  protected final int imageWidth;
+  protected final int imageHeight;
   protected float xMouse;
   protected float yMouse;
   protected int rightPos;
@@ -55,8 +57,6 @@ public class Screen<T extends EasyNPCMenu> extends net.minecraft.client.gui.scre
   protected boolean showCloseButton = true;
   protected Button closeButton = null;
   protected boolean compactMode = false;
-  protected int imageWidth = 318;
-  protected int imageHeight = 243;
   protected int titleLabelX;
   protected int titleLabelY;
   protected int leftPos;
@@ -64,7 +64,15 @@ public class Screen<T extends EasyNPCMenu> extends net.minecraft.client.gui.scre
   private int updateTicker = 0;
 
   protected Screen(T menu, Inventory inventory, Component component) {
+    this(menu, inventory, component, 318, 243);
+  }
+
+  protected Screen(T menu, Inventory inventory, Component component, int width, int height) {
     super(component);
+
+    // Set screen size
+    this.imageWidth = width;
+    this.imageHeight = height;
 
     // Get menu and screen data
     this.menu = menu;

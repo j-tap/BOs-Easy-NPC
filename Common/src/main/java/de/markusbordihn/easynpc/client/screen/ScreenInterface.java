@@ -148,15 +148,15 @@ public interface ScreenInterface {
   }
 
   default void renderDefaultScreenBg(GuiGraphics guiGraphics, int leftPos, int topPos) {
-    Graphics.blit(guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 210, 160);
+    Graphics.blit(guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos, 0, 0, 220, 160);
     Graphics.blit(
-        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 203, topPos, 132, 0, 120, 160);
+        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos + 213, topPos, 132, 0, 120, 160);
     Graphics.blit(
-        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 77, 0, 5, 210, 170);
+        guiGraphics, Constants.TEXTURE_DEMO_BACKGROUND, leftPos, topPos + 77, 0, 5, 220, 170);
     Graphics.blit(
         guiGraphics,
         Constants.TEXTURE_DEMO_BACKGROUND,
-        leftPos + 203,
+        leftPos + 213,
         topPos + 77,
         132,
         5,

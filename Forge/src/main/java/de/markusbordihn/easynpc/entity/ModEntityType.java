@@ -40,6 +40,8 @@ import de.markusbordihn.easynpc.entity.easynpc.npc.Villager;
 import de.markusbordihn.easynpc.entity.easynpc.npc.Wolf;
 import de.markusbordihn.easynpc.entity.easynpc.npc.Zombie;
 import de.markusbordihn.easynpc.entity.easynpc.npc.ZombieVillager;
+import de.markusbordihn.easynpc.entity.easynpc.raw.PiglinRaw;
+import de.markusbordihn.easynpc.entity.easynpc.raw.SkeletonRaw;
 import de.markusbordihn.easynpc.entity.easynpc.raw.ZombieRaw;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -118,6 +120,10 @@ public class ModEntityType {
       ENTITY_TYPES.register(ZombieVillager.ID, () -> ModEntityTypes.ZOMBIE_VILLAGER);
 
   // Raw entities (for modding only)
+  public static final RegistryObject<EntityType<PiglinRaw>> PIGLIN_RAW =
+      ENTITY_TYPES.register(PiglinRaw.ID, () -> ModEntityTypes.PIGLIN_RAW);
+  public static final RegistryObject<EntityType<SkeletonRaw>> SKELETON_RAW =
+      ENTITY_TYPES.register(SkeletonRaw.ID, () -> ModEntityTypes.SKELETON_RAW);
   public static final RegistryObject<EntityType<ZombieRaw>> ZOMBIE_RAW =
       ENTITY_TYPES.register(ZombieRaw.ID, () -> ModEntityTypes.ZOMBIE_RAW);
 
@@ -168,6 +174,8 @@ public class ModEntityType {
     event.put(ZOMBIE_VILLAGER.get(), ZombieVillager.createAttributes().build());
 
     // Raw entities (for modding only)
+    event.put(PIGLIN_RAW.get(), Piglin.createAttributes().build());
+    event.put(SKELETON_RAW.get(), Skeleton.createAttributes().build());
     event.put(
         ZOMBIE_RAW.get(), net.minecraft.world.entity.monster.Zombie.createAttributes().build());
 

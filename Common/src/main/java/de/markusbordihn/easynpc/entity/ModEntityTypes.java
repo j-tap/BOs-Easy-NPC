@@ -36,6 +36,8 @@ import de.markusbordihn.easynpc.entity.easynpc.npc.Villager;
 import de.markusbordihn.easynpc.entity.easynpc.npc.Wolf;
 import de.markusbordihn.easynpc.entity.easynpc.npc.Zombie;
 import de.markusbordihn.easynpc.entity.easynpc.npc.ZombieVillager;
+import de.markusbordihn.easynpc.entity.easynpc.raw.PiglinRaw;
+import de.markusbordihn.easynpc.entity.easynpc.raw.SkeletonRaw;
 import de.markusbordihn.easynpc.entity.easynpc.raw.ZombieRaw;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,11 +69,11 @@ public class ModEntityTypes {
   public static final EntityType<Piglin> PIGLIN = registerEntityType(Piglin::new, Piglin.ID);
   public static final EntityType<Piglin> PIGLIN_BRUTE =
       registerEntityType(
-          (entityType, level) -> new Piglin(entityType, level, Piglin.Variant.BRUTE),
+          (entityType, level) -> new Piglin(entityType, level, Piglin.Variant.PIGLIN_BRUTE),
           Piglin.ID_BRUTE);
   public static final EntityType<Piglin> PIGLIN_ZOMBIFIED =
       registerEntityType(
-          (entityType, level) -> new Piglin(entityType, level, Piglin.Variant.ZOMBIFIED),
+          (entityType, level) -> new Piglin(entityType, level, Piglin.Variant.ZOMBIFIED_PIGLIN),
           Piglin.ID_ZOMBIFIED);
   public static final EntityType<Horse> SKELETON_HORSE =
       registerEntityType(
@@ -141,6 +143,10 @@ public class ModEntityTypes {
       registerEntityType(ZombieVillager::new, ZombieVillager.ID);
 
   // Raw entities (for modding only)
+  public static final EntityType<PiglinRaw> PIGLIN_RAW =
+      registerEntityType(PiglinRaw::new, PiglinRaw.ID);
+  public static final EntityType<SkeletonRaw> SKELETON_RAW =
+      registerEntityType(SkeletonRaw::new, SkeletonRaw.ID);
   public static final EntityType<ZombieRaw> ZOMBIE_RAW =
       registerEntityType(ZombieRaw::new, ZombieRaw.ID);
 

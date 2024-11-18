@@ -1,4 +1,4 @@
-# Changelog for Easy NPC (1.21)
+# Changelog for Easy NPC (1.21.1)
 
 ## Note
 
@@ -7,6 +7,16 @@ For the full changelog, please go to the [GitHub History][history] instead.
 
 Note: Please always back up your world / NPCs before updating to a new version!
 Check the [upgrade guide][upgrade_guide] for more information.
+
+### 5.7.6
+
+- Fixed #375 by lowering layer height and resetting scale and rotation for NPCs for dialogs.
+- Fixed issue with Piglin, Piglin Brute and Zombified Piglin NPCs which could reset their Variant.
+- Fixed IDE auto-formatting error which added wrong import statements.
+- Increased config screen width by 10px for better usability.
+- Added dynamic sliders for Pose screen to allow direct input of values part of #379.
+- Added variant safety checks with a fallback to the default variant for NPCs.
+- Seperated common, client and server configuration files.
 
 ### 5.7.5
 
